@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheRatmir | 3D-художник</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-darkest: #020617;
+            --bg-darker: #030a1c;
+            --bg-dark: #0a1b2e;
+            --neon-blue: #00a9e8;
+            --neon-light: #4f9bc8;
+            --neon-dark: #1d4e89;
+        }
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--bg-darkest);
+            color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .cyber-glass {
+            background: rgba(3, 10, 28, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 169, 232, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 8px rgba(0, 169, 232, 0.5);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 169, 232, 0.4);
+        }
+        
+        .avatar-border {
+            border: 2px solid transparent;
+            background: linear-gradient(var(--bg-darkest), var(--bg-darkest)) padding-box,
+                        linear-gradient(135deg, var(--neon-blue), var(--neon-dark)) border-box;
+            animation: borderPulse 4s infinite alternate;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+            transform: translateY(-3px);
+        }
+        
+        .social-icon img {
+            border-radius: 0 !important;
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 169, 232, 0.3);
+        }
+        
+        .tg-btn {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-dark));
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .tg-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                transparent,
+                rgba(0, 169, 232, 0.4),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        .tg-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 169, 232, 0.4);
+        }
+        
+        .tg-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .support-btn {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .support-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+        }
+        
+        .support-btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* Галерея на весь экран */
+        .fullscreen-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(2, 6, 23, 0.95);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .fullscreen-gallery.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .gallery-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+        
+        .fullscreen-gallery.active .gallery-image {
+            transform: scale(1);
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-nav:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .gallery-prev {
+            left: 20px;
+        }
+        
+        .gallery-next {
+            right: 20px;
+        }
+        
+        .gallery-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-close:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        @keyframes borderPulse {
+            0% {
+                box-shadow: 0 0 10px rgba(0, 169, 232, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(0, 169, 232, 0.7);
+            }
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            20% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* Квадратная аватарка */
+        .avatar-square {
+            width: 100%;
+            aspect-ratio: 1/1;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Навигация -->
+    <header class="fixed top-0 left-0 w-full z-50 cyber-glass">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Лого / Имя -->
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-xl font-bold neon-text">TheRatmir</span>
+                </div>
+                
+                <!-- Десктопное меню -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#about" class="nav-link text-white hover:text-neon-blue">Обо мне</a>
+                    <a href="#projects" class="nav-link text-white hover:text-neon-blue">Проекты</a>
+                    <a href="#works" class="nav-link text-white hover:text-neon-blue">Работы</a>
+                    <a href="#contact" class="nav-link text-white hover:text-neon-blue">Контакты</a>
+                </nav>
+                
+                <!-- Мобильное меню -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Мобильное меню (скрыто) -->
+        <div id="mobile-menu" class="hidden md:hidden cyber-glass">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 text-white hover:bg-blue-900/50 rounded-md">Обо мне</a>
+                <a href="#projects" class="block px-3 py-2 text-white hover:bg-blue-900/50 rounded-md">Проекты</a>
+                <a href="#works" class="block px-3 py-2 text-white hover:bg-blue-900/50 rounded-md">Работы</a>
+                <a href="#contact" class="block px-3 py-2 text-white hover:bg-blue-900/50 rounded-md">Контакты</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero секция -->
+    <section id="about" class="min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="container mx-auto">
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-12">
+                <!-- Квадратная аватарка -->
+                <div class="avatar-square">
+                    <img src="Images/Ava2 (4).jpg" alt="TheRatmir" 
+                         class="w-full h-full rounded-xl avatar-border object-cover neon-glow">
+                </div>
+                
+                <!-- Описание -->
+                <div class="cyber-glass max-w-2xl p-8 rounded-xl">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-4 neon-text">
+                        Привет, я TheRatmir 👋
+                    </h1>
+                    <p class="text-lg mb-6 leading-relaxed">
+                        Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>. Работаю с анимацией, рендерами, сценами и креативными идеями, вдохновлёнными любимой игрой миллионов.
+                    </p>
+                    <p class="text-lg mb-8 leading-relaxed">
+                        У меня есть свой <span class="font-semibold text-red-300">YouTube-канал</span>, где я делюсь проектами, делаю ролики и экспериментирую с форматом. Также веду <span class="font-semibold text-blue-200">Telegram</span>, общаюсь с аудиторией в <span class="font-semibold text-blue-200">Discord</span> и делюсь контентом в <span class="font-semibold text-cyan-200">Bluesky</span>.
+                    </p>
+                    
+                    <!-- Соцсети -->
+                    <div class="flex gap-4">
+                        <a href="https://www.youtube.com/@TheRatmir42" target="_blank" class="social-icon">
+                            <img src="Icons/y.webp" alt="YouTube" class="w-10 h-10">
+                        </a>
+                        <a href="https://t.me/TheRatmirsBullshit" target="_blank" class="social-icon">
+                            <img src="Icons/t.webp" alt="Telegram" class="w-10 h-10">
+                        </a>
+                        <a href="https://discord.gg/HmK6xNQNRg" target="_blank" class="social-icon">
+                            <img src="Icons/d.webp" alt="Discord" class="w-10 h-10">
+                        </a>
+                        <a href="https://bsky.app/profile/theratmir.bsky.social" target="_blank" class="social-icon">
+                            <img src="Icons/b.webp" alt="Bluesky" class="w-10 h-10">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Проекты -->
+    <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-900/10 to-blue-900/30">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center neon-text">
+                Мои проекты
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Карточка проекта 1 -->
+                <div class="cyber-glass rounded-xl overflow-hidden transition-all duration-300 project-card">
+                    <img src="https://theratmir.github.io/TheRig/TheRig.webp" alt="TheRig для Blender" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">TheRig (Blender)</h3>
+                        <p class="text-gray-300 mb-4">Риг, который был создан мной и который я использую в своих работах</p>
+                        <a href="https://theratmir.github.io/TheRig/" target="_blank" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-all">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Карточка проекта 2 -->
+                <div class="cyber-glass rounded-xl overflow-hidden transition-all duration-300 project-card">
+                    <img src="Images/photo_2025-04-08_01-34-35.jpg" alt="TheRig для Mine-Imator" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">TheRig (Mine-Imator)</h3>
+                        <p class="text-gray-300 mb-4">Риг, который создал я и использовал, когда работал в Mine-Imator (больше не обновляется)</p>
+                        <a href="https://t.me/TheRatmirsBullshit/969" target="_blank" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-all">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Карточка проекта 3 -->
+                <div class="cyber-glass rounded-xl overflow-hidden transition-all duration-300 project-card">
+                    <img src="Images/photo_2025-04-08_01-34-40.jpg" alt="TheSimple" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">TheSimple</h3>
+                        <p class="text-gray-300 mb-4">Порт Simple рига в Mine-Imator (больше не обновляется)</p>
+                        <a href="https://t.me/TheRatmirsBullshit/971" target="_blank" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-all">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Работы -->
+    <section id="works" class="py-20 px-4 sm:px-6 lg:px-8 bg-blue-900/10">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center neon-text">
+                Мои работы
+            </h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Галерея работ -->
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/photo_2025-04-08_02-14-15.jpg" alt="Работа 8" class="w-full h-48 object-cover" data-index="7">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/photo_2025-04-08_02-14-01.jpg" alt="Работа 8" class="w-full h-48 object-cover" data-index="7">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/IMG_20250329_022726_262.jpg" alt="Работа 1" class="w-full h-48 object-cover" data-index="0">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/Manul s dr (2).jpg" alt="Работа 2" class="w-full h-48 object-cover" data-index="1">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/blender-01 (6) (2).jpg" alt="Работа 3" class="w-full h-48 object-cover" data-index="2">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/blender-01 (8) (2).jpg" alt="Работа 4" class="w-full h-48 object-cover" data-index="3">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/couple (2).jpg" alt="Работа 5" class="w-full h-48 object-cover" data-index="4">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/1 (2).jpg" alt="Работа 6" class="w-full h-48 object-cover" data-index="5">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/2 (2).jpg" alt="Работа 7" class="w-full h-48 object-cover" data-index="6">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/blender-01 (2) (3).jpg" alt="Работа 8" class="w-full h-48 object-cover" data-index="7">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/fog (2) (2).jpg" alt="Работа 8" class="w-full h-48 object-cover" data-index="7">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/Pale garden (2).jpg" alt="Работа 8" class="w-full h-48 object-cover" data-index="7">
+                </div>
+                <div class="cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 gallery-item">
+                    <img src="Images/Big Thanks.jpg" alt="Работа 8" class="w-full h-48 object-cover" data-index="7">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Контакты -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center neon-text">
+                Связь со мной
+            </h2>
+            
+            <div class="cyber-glass p-8 rounded-xl text-center">
+                <p class="text-lg mb-8 leading-relaxed">
+                    Лучший способ связаться со мной — написать в Telegram. Я отвечаю быстро и всегда открыт к сотрудничеству!
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="https://t.me/TheRatmirsBullshit" class="inline-block tg-btn px-8 py-4 rounded-lg text-white font-bold text-lg flex-1 sm:flex-none">
+                        Написать в Telegram
+                    </a>
+                    <a href="#" class="inline-block support-btn px-8 py-4 rounded-lg text-white font-bold text-lg flex-1 sm:flex-none">
+                        Поддержать меня (пока не работает)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Галерея на весь экран -->
+    <div class="fullscreen-gallery">
+        <button class="gallery-close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <button class="gallery-nav gallery-prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <img class="gallery-image" src="" alt="">
+        <button class="gallery-nav gallery-next">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Закрытие мобильного меню при клике на ссылку
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Галерея работ
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const fullscreenGallery = document.querySelector('.fullscreen-gallery');
+        const galleryImage = document.querySelector('.gallery-image');
+        const galleryClose = document.querySelector('.gallery-close');
+        const galleryPrev = document.querySelector('.gallery-prev');
+        const galleryNext = document.querySelector('.gallery-next');
+        
+        let currentImageIndex = 0;
+        const images = Array.from(galleryItems).map(item => item.querySelector('img').src);
+        
+        // Открытие галереи
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentImageIndex = index;
+                updateGalleryImage();
+                fullscreenGallery.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Закрытие галереи
+        function closeGallery() {
+            fullscreenGallery.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        galleryClose.addEventListener('click', closeGallery);
+        
+        // Закрытие при клике вне изображения
+        fullscreenGallery.addEventListener('click', (e) => {
+            if (e.target === fullscreenGallery) {
+                closeGallery();
+            }
+        });
+        
+        // Навигация по галерее
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateGalleryImage();
+        }
+        
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateGalleryImage();
+        }
+        
+        galleryPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            prevImage();
+        });
+        
+        galleryNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nextImage();
+        });
+        
+        // Обновление изображения в галерее
+        function updateGalleryImage() {
+            galleryImage.src = images[currentImageIndex];
+            galleryImage.alt = `Работа ${currentImageIndex + 1}`;
+        }
+        
+        // Управление клавиатурой
+        document.addEventListener('keydown', (e) => {
+            if (!fullscreenGallery.classList.contains('active')) return;
+            
+            switch(e.key) {
+                case 'Escape':
+                    closeGallery();
+                    break;
+                case 'ArrowLeft':
+                    prevImage();
+                    break;
+                case 'ArrowRight':
+                    nextImage();
+                    break;
+            }
+        });
+        
+        // Предотвращаем закрытие при клике на само изображение или кнопки навигации
+        galleryImage.addEventListener('click', (e) => e.stopPropagation());
+    </script>
+</body>
+</html>
