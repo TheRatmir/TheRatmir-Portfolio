@@ -38,8 +38,6 @@
         .gallery-close { position:absolute; top:20px; right:20px; background:rgba(0,0,0,0.5); color:white; border:none; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:101; transition:all 0.3s ease; }
         .gallery-close:hover, .gallery-nav:hover { background:rgba(0,0,0,0.7); }
         @keyframes borderPulse { 0% { box-shadow:0 0 10px rgba(0,169,232,0.4); } 100% { box-shadow:0 0 20px rgba(0,169,232,0.7); } }
-        @keyframes shine { 0% { left:-100%; } 20% { left:100%; } 100% { left:100%; } }
-        .avatar-square { width:100%; aspect-ratio:1/1; max-width:400px; }
     </style>
 </head>
 <body class="relative">
@@ -53,7 +51,6 @@
                 <nav class="hidden md:flex space-x-8">
                     <a href="#about" class="nav-link text-white hover:text-neon-blue">Обо мне</a>
                     <a href="#projects" class="nav-link text-white hover:text-neon-blue">Проекты</a>
-                    <a href="#works" class="nav-link text-white hover:text-neon-blue">Работы</a>
                     <a href="#contact" class="nav-link text-white hover:text-neon-blue">Поддержать меня</a>
                 </nav>
                 <div class="md:hidden">
@@ -68,17 +65,15 @@
         <div class="container mx-auto">
             <div class="flex flex-col lg:flex-row items-center justify-center gap-12">
                 <div class="avatar-square">
-                    <img src="Images/Ava2 (4).jpg" alt="TheRatmir" class="w-full h-full rounded-xl avatar-border object-cover neon-glow">
+                    <img src="Icons/Ava2 (4).jpg" alt="TheRatmir" class="w-full h-full rounded-xl avatar-border object-cover neon-glow">
                 </div>
                 <div class="cyber-glass max-w-2xl p-8 rounded-xl">
                     <h1 class="text-3xl md:text-4xl font-bold mb-4 neon-text">Привет, я TheRatmir 👋</h1>
-                    <p class="text-lg mb-6 leading-relaxed">Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>. Работаю с анимацией, рендерами, сценами и креативными идеями, вдохновлёнными любимой игрой миллионов.</p>
-                    <p class="text-lg mb-8 leading-relaxed">У меня есть свой <span class="font-semibold text-red-300">YouTube-канал</span>, где я делюсь проектами, делаю ролики и экспериментирую с форматом. Также веду <span class="font-semibold text-blue-200">Telegram</span> канал и делюсь творчеством в <span class="font-semibold text-cyan-200">Bluesky</span>.</p>
+                    <p class="text-lg mb-6 leading-relaxed">Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>. Я делаю риги, делюсь творчеством и жизнью в <span class="font-semibold text-blue-200">Telegram</span>.</p>
+                    <p class="text-lg mb-8 leading-relaxed">У меня есть свой <span class="font-semibold text-red-300">YouTube-канал</span>.</p>
                     <div class="flex gap-4">
-                        <a href="https://www.youtube.com/@TheRatmir42" target="_blank" class="social-icon"><img src="Icons/y.webp" alt="YouTube" class="w-10 h-10"></a>
-                        <a href="https://t.me/TheRatmirsBullshit" target="_blank" class="social-icon"><img src="Icons/t.webp" alt="Telegram" class="w-10 h-10"></a>
-                        
-                        <a href="https://bsky.app/profile/theratmir.bsky.social" target="_blank" class="social-icon"><img src="Icons/b.webp" alt="Bluesky" class="w-10 h-10"></a>
+                        <a href="https://www.youtube.com/@TheRatmir153" target="_blank" class="social-icon"><img src="Icons/y.webp" alt="YouTube" class="w-10 h-10"></a>
+                        <a href="https://t.me/TheRatmir153" target="_blank" class="social-icon"><img src="Icons/t.webp" alt="Telegram" class="w-10 h-10"></a>
                     </div>
                 </div>
             </div>
@@ -112,13 +107,6 @@
             </div>
         </div>
     </section>
-    <!-- Работы -->
-    <section id="works" class="py-20 px-4 sm:px-6 lg:px-8 bg-blue-900/10">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center neon-text">Мои работы</h2>
-            <div id="gallery" class="flex flex-wrap justify-center gap-4"></div>
-        </div>
-    </section>
     <!-- Поддержка -->
     <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto max-w-4xl"><div class="cyber-glass p-8 rounded-xl text-center"><a href="#" class="support-btn px-8 py-4 rounded-lg text-white font-bold text-lg">Поддержать меня (пока не работает)</a></div></div>
@@ -132,45 +120,7 @@
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
         mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
-        // Gallery data
-        const galleryImages = [
-            { src: 'Images/Screenbox_20254309_034311.jpg', alt: 'Работа 1' },
-            { src: 'Images/photo_2025-04-08_02-14-15.jpg', alt: 'Работа 2' },
-            { src: 'Images/photo_2025-04-08_02-14-01.jpg', alt: 'Работа 3' },
-            { src: 'Images/IMG_20250329_022726_262.jpg', alt: 'Работа 4' },
-            { src: 'Images/Manul s dr (2).jpg', alt: 'Работа 5' },
-            { src: 'Images/blender-01 (6) (2).jpg', alt: 'Работа 6' },
-            { src: 'Images/blender-01 (8) (2).jpg', alt: 'Работа 7' },
-            { src: 'Images/couple (2).jpg', alt: 'Работа 8' },
-            { src: 'Images/1 (2).jpg', alt: 'Работа 9' },
-            { src: 'Images/2 (2).jpg', alt: 'Работа 10' },
-            { src: 'Images/blender-01 (2) (3).jpg', alt: 'Работа 11' },
-            { src: 'Images/fog (2) (2).jpg', alt: 'Работа 12' },
-            { src: 'Images/Pale garden (2).jpg', alt: 'Работа 13' },
-            { src: 'Images/Big Thanks.jpg', alt: 'Работа 14' }
-        ];
-        const galleryContainer = document.getElementById('gallery');
-        let currentIndex = 0;
-        const fullscreenGallery = document.querySelector('.fullscreen-gallery');
-        const galleryImage = document.querySelector('.gallery-image');
-        const galleryPrev = document.querySelector('.gallery-prev');
-        const galleryNext = document.querySelector('.gallery-next');
-        const galleryClose = document.querySelector('.gallery-close');
-        galleryImages.forEach(({src, alt}, idx) => {
-            const item = document.createElement('div');
-            item.className = 'cyber-glass rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-105 w-[calc(50%-8px)] sm:w-[calc(33.333%-11px)] lg:w-[calc(25%-12px)] max-w-xs';
-            const img = document.createElement('img'); img.src = src; img.alt = alt; img.className = 'w-full h-48 object-cover'; img.dataset.index = idx;
-            item.appendChild(img);
-            galleryContainer.appendChild(item);
-        });
-        const updateImage = () => { galleryImage.src = galleryImages[currentIndex].src; galleryImage.alt = galleryImages[currentIndex].alt; };
-        galleryContainer.addEventListener('click', e => { if(e.target.tagName!=='IMG') return; currentIndex=+e.target.dataset.index; updateImage(); fullscreenGallery.classList.add('active'); document.body.style.overflow='hidden'; });
-        const closeGallery = () => { fullscreenGallery.classList.remove('active'); document.body.style.overflow='auto'; };
-        galleryClose.addEventListener('click', closeGallery);
-        fullscreenGallery.addEventListener('click', e => { if (e.target===fullscreenGallery) closeGallery(); });
-        galleryPrev.addEventListener('click', e => { e.stopPropagation(); currentIndex=(currentIndex-1+galleryImages.length)%galleryImages.length; updateImage(); });
-        galleryNext.addEventListener('click', e => { e.stopPropagation(); currentIndex=(currentIndex+1)%galleryImages.length; updateImage(); });
-        document.addEventListener('keydown', e => { if(!fullscreenGallery.classList.contains('active')) return; if(e.key==='Escape') closeGallery(); if(e.key==='ArrowLeft') galleryPrev.click(); if(e.key==='ArrowRight') galleryNext.click(); });
+        // Gallery data (works section removed)
     });
     </script>
 </body>
