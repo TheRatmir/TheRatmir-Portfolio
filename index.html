@@ -28,15 +28,16 @@
         .social-icon:hover { filter: drop-shadow(0 0 10px var(--neon-blue)); transform: translateY(-3px); }
         .project-card { transition: all 0.3s ease; }
         .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,169,232,0.3); }
-        .fullscreen-gallery { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(2,6,23,0.95); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
-        .fullscreen-gallery.active { opacity:1; pointer-events:all; }
-        .gallery-image { max-width:90%; max-height:90%; object-fit:contain; transform:scale(0.9); transition:transform 0.3s ease; cursor:default; }
-        .fullscreen-gallery.active .gallery-image { transform:scale(1); }
-        .gallery-nav { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:white; border:none; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:101; transition:all 0.3s ease; }
-        .gallery-prev { left:20px; }
-        .gallery-next { right:20px; }
-        .gallery-close { position:absolute; top:20px; right:20px; background:rgba(0,0,0,0.5); color:white; border:none; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:101; transition:all 0.3s ease; }
-        .gallery-close:hover, .gallery-nav:hover { background:rgba(0,0,0,0.7); }
+        /* Ensure avatar and description match width */
+        .avatar-container, .cyber-glass.description {
+            width: 100%;
+            max-width: 32rem; /* same as max-w-2xl */
+        }
+        @media (min-width: 1024px) {
+            .avatar-container, .cyber-glass.description {
+                flex: 1 1 0;
+            }
+        }
         @keyframes borderPulse { 0% { box-shadow:0 0 10px rgba(0,169,232,0.4); } 100% { box-shadow:0 0 20px rgba(0,169,232,0.7); } }
     </style>
 </head>
@@ -58,24 +59,18 @@
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden cyber-glass">...</div>
     </header>
     <!-- Hero -->
-    <section id="about" class="min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 pb-20">
-        <div class="container mx-auto">
-            <div class="flex flex-col lg:flex-row items-center justify-center gap-12">
-                <div class="avatar-square">
-                    <img src="Icons/Ava2 (4).jpg" alt="TheRatmir" class="w-full h-full rounded-xl avatar-border object-cover neon-glow">
-                </div>
-                <div class="cyber-glass max-w-2xl p-8 rounded-xl">
-                    <h1 class="text-3xl md:text-4xl font-bold mb-4 neon-text">Привет, я TheRatmir 👋</h1>
-                    <p class="text-lg mb-6 leading-relaxed">Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>. Я делаю риги, делюсь творчеством и жизнью в <span class="font-semibold text-blue-200">Telegram</span>.</p>
-                    <p class="text-lg mb-8 leading-relaxed">У меня есть свой <span class="font-semibold text-red-300">YouTube-канал</span>.</p>
-                    <div class="flex gap-4">
-                        <a href="https://www.youtube.com/@TheRatmir153" target="_blank" class="social-icon"><img src="Icons/y.webp" alt="YouTube" class="w-10 h-10"></a>
-                        <a href="https://t.me/TheRatmir153" target="_blank" class="social-icon"><img src="Icons/t.webp" alt="Telegram" class="w-10 h-10"></a>
-                    </div>
-                </div>
+    <section id="about" class="min-h-screen flex flex-col lg:flex-row items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 pb-20 gap-12">
+        <div class="avatar-container avatar-square flex justify-center">
+            <img src="Images/Ava.jpg" alt="TheRatmir" class="w-full rounded-xl avatar-border object-cover neon-glow">
+        </div>
+        <div class="cyber-glass description p-8 rounded-xl text-center lg:text-left">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 neon-text">Привет, я TheRatmir 👋</h1>
+            <p class="text-lg mb-6 leading-relaxed">Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>. Я делаю риги, рендеры, анимации и другие приколы; делюсь творчеством и жизнью в <a href="https://t.me/TheRatmir153" class="font-semibold text-blue-200" target="_blank">Telegram</a>, а анимациями — на <a href="https://www.youtube.com/@TheRatmir153" class="font-semibold text-red-300" target="_blank">YouTube</a>.</p>
+            <div class="flex justify-center lg:justify-start gap-4">
+                <a href="https://www.youtube.com/@TheRatmir153" target="_blank" class="social-icon"><img src="Images/y.webp" alt="YouTube" class="w-10 h-10"></a>
+                <a href="https://t.me/TheRatmir153" target="_blank" class="social-icon"><img src="Images/t.webp" alt="Telegram" class="w-10 h-10"></a>
             </div>
         </div>
     </section>
@@ -91,13 +86,13 @@
                 </div>
                 <!-- TheRig Mine-Imator -->
                 <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
-                    <img src="Images/photo_2025-04-08_01-34-35.jpg" alt="TheRig Mine-Imator" class="w-full h-48 object-cover">
-                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheRig (Mine-Imator)</h3><p class="text-gray-300 mb-4">Риг для Mine-Imator (больше не обновляется)</p><a href="https://t.me/TheRatmirsBullshit/969" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
+                    <img src="Images/rig.jpg" alt="TheRig Mine-Imator" class="w-full h-48 object-cover">
+                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheRig (Mine-Imator)</h3><p class="text-gray-300 mb-4">Риг для Mine-Imator (больше не обновляется)</p><a href="https://t.me/TheRatmir153/969" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
                 </div>
-                <!-- TheSimple -->
+                <!-- TheSimple Mine-Imator -->
                 <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
-                    <img src="Images/photo_2025-04-08_01-34-40.jpg" alt="TheSimple" class="w-full h-48 object-cover">
-                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheSimple</h3><p class="text-gray-300 mb-4">Порт Simple рига в Mine-Imator</p><a href="https://t.me/TheRatmirsBullshit/971" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
+                    <img src="Images/simple.jpg" alt="TheSimple (Mine-Imator)" class="w-full h-48 object-cover">
+                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheSimple (Mine-Imator)</h3><p class="text-gray-300 mb-4">Порт Simple рига в Mine-Imator</p><a href="https://t.me/TheRatmir153/971" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
                 </div>
                 <!-- EmoteBend -->
                 <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
@@ -112,7 +107,7 @@
         <div class="container mx-auto max-w-4xl"><div class="cyber-glass p-8 rounded-xl text-center"><a href="#" class="support-btn px-8 py-4 rounded-lg text-white font-bold text-lg">Поддержать меня (пока не работает)</a></div></div>
     </section>
     <!-- Fullscreen gallery -->
-    <div class="fullscreen-gallery"> <button class="gallery-close">✕</button> <button class="gallery-nav gallery-prev">←</button> <img class="gallery-image" src="" alt=""> <button class="gallery-nav gallery-next">→</button> </div>
+    
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Mobile menu
