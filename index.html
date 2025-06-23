@@ -28,17 +28,43 @@
         .social-icon:hover { filter: drop-shadow(0 0 10px var(--neon-blue)); transform: translateY(-3px); }
         .project-card { transition: all 0.3s ease; }
         .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,169,232,0.3); }
+        
+        /* Стиль для кнопки */
+        .contact-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, rgba(0,169,232,0.15) 0%, rgba(29,78,137,0.15) 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0,169,232,0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(0,169,232,0.1);
+            text-shadow: 0 0 5px rgba(0,169,232,0.5);
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0,169,232,0.3);
+            background: linear-gradient(135deg, rgba(0,169,232,0.25) 0%, rgba(29,78,137,0.25) 100%);
+        }
+
         /* Ensure avatar and description match width */
         .avatar-container, .cyber-glass.description {
             width: 100%;
-            max-width: 32rem; /* same as max-w-2xl */
+            max-width: 32rem;
         }
         @media (min-width: 1024px) {
             .avatar-container, .cyber-glass.description {
                 flex: 1 1 0;
             }
         }
-        @keyframes borderPulse { 0% { box-shadow:0 0 10px rgba(0,169,232,0.4); } 100% { box-shadow:0 0 20px rgba(0,169,232,0.7); } }
+        @keyframes borderPulse { 
+            0% { box-shadow:0 0 10px rgba(0,169,232,0.4); } 
+            100% { box-shadow:0 0 20px rgba(0,169,232,0.7); } 
+        }
     </style>
 </head>
 <body class="relative">
@@ -52,7 +78,7 @@
                 <nav class="hidden md:flex space-x-8">
                     <a href="#about" class="nav-link text-white hover:text-neon-blue">Обо мне</a>
                     <a href="#projects" class="nav-link text-white hover:text-neon-blue">Проекты</a>
-                    <a href="#contact" class="nav-link text-white hover:text-neon-blue">Поддержать меня</a>
+                    <a href="#contact" class="nav-link text-white hover:text-neon-blue">Связаться со мной</a>
                 </nav>
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-white focus:outline-none">...</button>
@@ -102,20 +128,24 @@
             </div>
         </div>
     </section>
-    <!-- Поддержка -->
+    <!-- Связаться со мной -->
     <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8">
-        <div class="container mx-auto max-w-4xl"><div class="cyber-glass p-8 rounded-xl text-center"><a href="#" class="support-btn px-8 py-4 rounded-lg text-white font-bold text-lg">Поддержать меня (пока не работает)</a></div></div>
+        <div class="container mx-auto max-w-4xl">
+            <div class="cyber-glass p-8 rounded-xl text-center">
+                <a href="https://t.me/TheRatmirBot" class="contact-btn">Связаться со мной</a>
+            </div>
+        </div>
     </section>
-    <!-- Fullscreen gallery -->
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Mobile menu
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
-        // Gallery data (works section removed)
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+        }
     });
     </script>
 </body>
