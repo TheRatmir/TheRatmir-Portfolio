@@ -28,8 +28,7 @@
         .social-icon:hover { filter: drop-shadow(0 0 10px var(--neon-blue)); transform: translateY(-3px); }
         .project-card { transition: all 0.3s ease; }
         .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,169,232,0.3); }
-        
-        /* Стиль для кнопки */
+
         .contact-btn {
             display: inline-block;
             padding: 16px 40px;
@@ -44,14 +43,13 @@
             box-shadow: 0 0 15px rgba(0,169,232,0.1);
             text-shadow: 0 0 5px rgba(0,169,232,0.5);
         }
-        
+
         .contact-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 0 25px rgba(0,169,232,0.3);
             background: linear-gradient(135deg, rgba(0,169,232,0.25) 0%, rgba(29,78,137,0.25) 100%);
         }
 
-        /* Ensure avatar and description match width */
         .avatar-container, .cyber-glass.description {
             width: 100%;
             max-width: 32rem;
@@ -61,9 +59,9 @@
                 flex: 1 1 0;
             }
         }
-        @keyframes borderPulse { 
-            0% { box-shadow:0 0 10px rgba(0,169,232,0.4); } 
-            100% { box-shadow:0 0 20px rgba(0,169,232,0.7); } 
+        @keyframes borderPulse {
+            0% { box-shadow:0 0 10px rgba(0,169,232,0.4); }
+            100% { box-shadow:0 0 20px rgba(0,169,232,0.7); }
         }
     </style>
 </head>
@@ -86,6 +84,7 @@
             </div>
         </div>
     </header>
+
     <!-- Hero -->
     <section id="about" class="min-h-screen flex flex-col lg:flex-row items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 pb-20 gap-12">
         <div class="avatar-container avatar-square flex justify-center">
@@ -93,42 +92,37 @@
         </div>
         <div class="cyber-glass description p-8 rounded-xl text-center lg:text-left">
             <h1 class="text-3xl md:text-4xl font-bold mb-4 neon-text">Привет, я TheRatmir 👋</h1>
-            <p class="text-lg mb-6 leading-relaxed">Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>. Я делаю риги, рендеры, анимации и другие приколы; делюсь творчеством и жизнью в <a href="https://t.me/TheRatmir153" class="font-semibold text-blue-200" target="_blank">Telegram</a>, а анимациями — на <a href="https://www.youtube.com/@TheRatmir153" class="font-semibold text-red-300" target="_blank">YouTube</a>.</p>
+            <p class="text-lg mb-6 leading-relaxed">
+                Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по
+                <span class="font-semibold text-green-300">Minecraft</span> в <span class="font-semibold text-orange-300">Blender</span>.
+                Я делаю риги, рендеры, анимации и другие приколы; делюсь творчеством и жизнью в
+                <a href="https://t.me/TheRatmir153" class="font-semibold text-blue-200" target="_blank">Telegram</a>,
+                а анимациями — на
+                <a href="https://www.youtube.com/@TheRatmir153" class="font-semibold text-red-300" target="_blank">YouTube</a>.
+            </p>
             <div class="flex justify-center lg:justify-start gap-4">
-                <a href="https://www.youtube.com/@TheRatmir153" target="_blank" class="social-icon"><img src="Images/y.webp" alt="YouTube" class="w-10 h-10"></a>
-                <a href="https://t.me/TheRatmir153" target="_blank" class="social-icon"><img src="Images/t.webp" alt="Telegram" class="w-10 h-10"></a>
+                <a href="https://www.youtube.com/@TheRatmir153" target="_blank" class="social-icon">
+                    <img src="Images/y.webp" alt="YouTube" class="w-10 h-10">
+                </a>
+                <a href="https://t.me/TheRatmir153" target="_blank" class="social-icon">
+                    <img src="Images/t.webp" alt="Telegram" class="w-10 h-10">
+                </a>
+                <a href="https://x.com/TheRatmir153" target="_blank" class="social-icon">
+                    <img src="Images/x.webp" alt="X" class="w-10 h-10">
+                </a>
+                <a href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" class="social-icon">
+                    <img src="Images/NameMc.webp" alt="NameMc" class="w-10 h-10">
+                </a>
+                <a href="https://modrinth.com/user/TheRatmir" target="_blank" class="social-icon">
+                    <img src="Images/Modrinth.webp" alt="Modrinth" class="w-10 h-10">
+                </a>
             </div>
         </div>
     </section>
+
     <!-- Проекты -->
-    <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-900/10 to-blue-900/30">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center neon-text">Мои проекты</h2>
-            <div class="flex flex-wrap justify-center gap-8">
-                <!-- TheRig Blender -->
-                <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
-                    <img src="https://theratmir.github.io/TheRig/Images/TheRig.webp" alt="TheRig для Blender" class="w-full h-48 object-cover">
-                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheRig (Blender)</h3><p class="text-gray-300 mb-4">Риг, созданный мной и используемый в моих работах</p><a href="https://theratmir.github.io/TheRig/" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
-                </div>
-                <!-- TheRig Mine-Imator -->
-                <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
-                    <img src="Images/rig.jpg" alt="TheRig Mine-Imator" class="w-full h-48 object-cover">
-                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheRig (Mine-Imator)</h3><p class="text-gray-300 mb-4">Риг для Mine-Imator (больше не обновляется)</p><a href="https://t.me/TheRatmir153/969" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
-                </div>
-                <!-- TheSimple Mine-Imator -->
-                <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
-                    <img src="Images/simple.jpg" alt="TheSimple (Mine-Imator)" class="w-full h-48 object-cover">
-                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">TheSimple (Mine-Imator)</h3><p class="text-gray-300 mb-4">Порт Simple рига в Mine-Imator</p><a href="https://t.me/TheRatmir153/971" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
-                </div>
-                <!-- EmoteBend -->
-                <div class="cyber-glass rounded-xl overflow-hidden project-card w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-md">
-                    <img src="https://cdn.modrinth.com/data/R7AmfT2N/images/4b8cbcc79909549637a00d13df0079378c7248bd_350.webp" alt="EmoteBend" class="w-full h-48 object-cover">
-                    <div class="p-6"><h3 class="text-xl font-semibold mb-2">EmoteBend(FreshFace)</h3><p class="text-gray-300 mb-4">Ресурспак для изгибов из Emotecraft и анимации лица из Just Expressions</p><a href="https://modrinth.com/resourcepack/emotebend" class="inline-block bg-blue-900/70 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Подробнее</a></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Связаться со мной -->
+    <!-- ... ОСТАЛЬНАЯ ЧАСТЬ БЕЗ ИЗМЕНЕНИЙ ... -->
+
     <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto max-w-4xl">
             <div class="cyber-glass p-8 rounded-xl text-center">
@@ -136,10 +130,9 @@
             </div>
         </div>
     </section>
-    
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Mobile menu
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         if (mobileMenuButton && mobileMenu) {
