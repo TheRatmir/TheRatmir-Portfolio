@@ -1,418 +1,704 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TheRatmir — Портфолио</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TheRatmir — Портфолио</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts для стилей шрифтов -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg: #000000; /* OLED black */
-      --deep-blue: #071132;
-      --accent-purple: #6b4cff;
-      --accent-blue: #1e90ff;
-      --glass-weak: rgba(255,255,255,0.04);
-      --glass-strong: rgba(255,255,255,0.06);
-      --txt: #dbe9ff;
-      --muted: #9fb2d8;
-      --radius: 14px;
-      --transition: 300ms cubic-bezier(.2,.9,.3,1);
-      --card-shadow: 0 6px 20px rgba(7,17,50,0.6);
-    }
+    <!-- Tailwind CSS CDN для утилитарных классов -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(27, 19, 64, 0.45), transparent 8%),
-                  radial-gradient(900px 500px at 90% 80%, rgba(16, 35, 80, 0.5), transparent 10%),
-                  var(--bg);
-      color:var(--txt);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
+    <style>
+        /* CSS-переменные для легкой настройки цветов и размеров */
+        :root {
+            --bg: #000000; /* OLED black */
+            --deep-blue: #071132;
+            --accent-purple: #6b4cff;
+            --accent-blue: #1e90ff;
+            --glass-weak: rgba(255, 255, 255, 0.04);
+            --glass-strong: rgba(255, 255, 255, 0.06);
+            --txt: #dbe9ff;
+            --muted: #9fb2d8;
+            --radius: 14px;
+            --transition: 300ms cubic-bezier(.2, .9, .3, 1);
+            --card-shadow: 0 6px 20px rgba(7, 17, 50, 0.6);
+        }
 
-    .bg-animated{
-      position:fixed; inset:0; z-index:-2; pointer-events:none;
-      background: linear-gradient(120deg, rgba(16,25,56,0.6), rgba(11,7,28,0.6));
-      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1), rgba(0,0,0,0.4));
-      animation: bgShift 18s ease-in-out infinite;
-    }
-    @keyframes bgShift{
-      0%{filter: hue-rotate(0deg) saturate(1)}
-      50%{filter: hue-rotate(20deg) saturate(1.15)}
-      100%{filter: hue-rotate(0deg) saturate(1)}
-    }
+        /* Глобальные стили для всех элементов */
+        * {
+            box-sizing: border-box
+        }
 
-    .container{max-width:1100px;margin:0 auto;padding:28px}
-    header{
-      position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between;
-      padding:18px 24px; margin:0 12px; border-radius:16px; backdrop-filter: blur(8px) saturate(120%);
-      background: linear-gradient(180deg, rgba(10,12,20,0.45), rgba(6,8,20,0.25));
-      box-shadow: 0 4px 30px rgba(2,3,8,0.6);
-      transition: transform var(--transition), padding 240ms ease, backdrop-filter 240ms ease;
-      border: 1px solid rgba(255,255,255,0.03);
-    }
-    header.small{transform: scale(0.995); padding:10px 20px; backdrop-filter: blur(12px) saturate(130%);}
+        html, body {
+            height: 100%;
+            min-height: 100%;
+        }
 
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{
-      width:48px;height:48px;border-radius:10px;display:grid;place-items:center;font-weight:700;
-      background: linear-gradient(135deg,var(--deep-blue), rgba(40,20,100,0.35));
-      box-shadow: 0 6px 16px rgba(0,0,0,0.6), inset 0 -6px 18px rgba(255,255,255,0.02);
-      color:var(--txt);
-      font-family: 'Montserrat', sans-serif;
-    }
-    .site-title{font-weight:700;letter-spacing:0.2px}
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            /* Обновленный градиентный фон, который растягивается на всю высоту */
+            background: linear-gradient(180deg, #000000 0%, #030312 100%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%; /* Растягивает фон на 100% ширины и 100% высоты */
+            color: #e6eef8;
+        }
 
-    nav{display:flex;gap:12px;align-items:center}
-    nav a{
-      padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600;font-size:15px;
-      transition:all var(--transition);
-      position:relative;overflow:visible;
-    }
-    nav a:focus{outline:2px solid rgba(255,255,255,0.06)}
-    nav a::after{
-      content:""; position:absolute; left:12px; right:12px; bottom:2px; height:2px; border-radius:2px;
-      transform-origin:left; transform:scaleX(0); background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));
-      transition:transform 260ms ease;
-    }
-    nav a:hover{color:var(--txt); transform:translateY(-2px)}
-    nav a:hover::after{transform:scaleX(1)}
+        /* Стили для фонового свечения (оставляем, так как оно статичное) */
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(40rem 20rem at 10% 10%, rgba(14,165,233,0.08), transparent 10%), radial-gradient(36rem 20rem at 90% 30%, rgba(124,58,237,0.06), transparent 10%);
+            filter: blur(36px) saturate(120%);
+        }
 
-    main{padding:36px 0}
-    .hero{
-      display:flex; align-items:center; justify-content:center; gap:36px; padding:48px 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      border-radius:18px; margin-bottom:26px;
-    }
+        /* Контейнер для центрирования контента */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px
+        }
 
-    .panels{display:flex; gap:28px; align-items:center; width:100%; justify-content:center;}
-    .panel{flex:1; min-width:260px; max-width:520px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:var(--radius); padding:20px; backdrop-filter: blur(10px) saturate(120%);
-      border:1px solid rgba(255,255,255,0.03); box-shadow:var(--card-shadow); transition:transform var(--transition), box-shadow var(--transition);
-      opacity:0; transform: translateY(18px) scale(0.995);
-    }
-    .panel.visible{opacity:1; transform:none}
+        /* Стили для шапки сайта */
+        header {
+            position: sticky;
+            top: 18px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            margin: 0 12px;
+            border-radius: 16px;
+            backdrop-filter: blur(8px) saturate(120%);
+            background: linear-gradient(180deg, rgba(10, 12, 20, 0.45), rgba(6, 8, 20, 0.25));
+            box-shadow: 0 4px 30px rgba(2, 3, 8, 0.6);
+            transition: transform var(--transition), padding 240ms ease, backdrop-filter 240ms ease;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
 
-    .avatar{
-      width:100%; aspect-ratio:1/1; border-radius:16px; overflow:hidden; display:block; position:relative;
-      border:1px solid rgba(255,255,255,0.04); box-shadow: 0 12px 30px rgba(16,20,40,0.7), 0 0 30px rgba(30,144,255,0.05) inset;
-      background:linear-gradient(135deg, rgba(20,30,70,0.6), rgba(10,10,20,0.6));
-    }
-    .avatar img{width:100%; height:100%; object-fit:cover; display:block}
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px
+        }
 
-    .about-text{font-size:16px; color:var(--txt); line-height:1.45}
-    .about-title{font-family: 'Montserrat', sans-serif; font-size:20px; margin-bottom:8px}
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--deep-blue), rgba(40, 20, 100, 0.35));
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 -6px 18px rgba(255, 255, 255, 0.02);
+            color: var(--txt);
+            font-family: 'Montserrat', sans-serif;
+        }
 
-    .socials{display:flex; gap:12px; margin-top:16px}
-    .social-btn{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;border:1px solid rgba(255,255,255,0.03);
-      background:var(--glass-weak); backdrop-filter: blur(6px); transition:transform 220ms ease, box-shadow 220ms ease; cursor:pointer;
-    }
-    .social-btn:hover{transform:translateY(-6px) scale(1.06); box-shadow:0 10px 30px rgba(0,0,0,0.6), 0 0 18px rgba(32,90,255,0.08)}
-    .social-btn svg{width:20px;height:20px;opacity:0.95}
+        .site-title {
+            font-weight: 700;
+            letter-spacing: 0.2px
+        }
 
-      .section-title {
-          font-family: 'Montserrat', sans-serif;
-          font-size: 42px; /* увеличили */
-          margin-bottom: 12px;
-          transform: translateY(-6px); /* приподняли */
-      }
+        nav {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
 
-      .projects-grid {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 18px;
-          justify-content: center; /* центрируем все ряды */
-      }
+            nav a {
+                padding: 8px 12px;
+                border-radius: 10px;
+                text-decoration: none;
+                color: var(--muted);
+                font-weight: 600;
+                font-size: 15px;
+                transition: all var(--transition);
+                position: relative;
+                overflow: visible;
+            }
 
-      .project {
-          flex: 1 1 30%; /* примерно как 3 в ряд */
-          max-width: 340px; /* ограничиваем, чтобы не раздувалось слишком */
-      }
+                nav a:focus {
+                    outline: 2px solid rgba(255, 255, 255, 0.06)
+                }
 
-    .project{border-radius:12px; overflow:hidden; position:relative; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); transition:transform var(--transition), box-shadow var(--transition)}
-    .project:hover{transform:translateY(-10px); box-shadow:0 20px 50px rgba(3,8,30,0.7)}
-    .proj-img{height:160px; display:block; width:100%; object-fit:cover; transition:transform 420ms cubic-bezier(.2,.9,.3,1)}
-    .project:hover .proj-img{transform:scale(1.06)}
-    .proj-body{padding:14px}
-      .proj-title {
-          font-weight: 700;
-          font-size: 20px; /* было по умолчанию браузера, теперь больше */
-          background: linear-gradient(90deg,var(--accent-blue),var(--accent-purple));
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-      }
+                nav a::after {
+                    content: "";
+                    position: absolute;
+                    left: 12px;
+                    right: 12px;
+                    bottom: 2px;
+                    height: 2px;
+                    border-radius: 2px;
+                    transform-origin: left;
+                    transform: scaleX(0);
+                    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+                    transition: transform 260ms ease;
+                }
 
-      .proj-desc {
-          color: var(--muted);
-          font-size: 16px; /* было 14px */
-          margin-top: 8px;
-      }
+                /* Анимация при наведении на ссылки в навигации */
+                nav a:hover {
+                    color: var(--txt);
+                    transform: translateY(-2px);
+                }
 
-      .proj-cta {
-          margin-top: 12px;
-          display: inline-block;
-          padding: 14px 20px;
-          border-radius: 12px;
-          text-decoration: none;
-          font-weight: 700;
-          font-size: 16px;
-          color: white; /* <-- белый текст */
-          background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-          border: 1px solid rgba(255,255,255,0.03);
-          backdrop-filter: blur(6px);
-          transition: transform var(--transition), box-shadow var(--transition);
-      }
+                    nav a:hover::after {
+                        transform: scaleX(1)
+                    }
 
+                /* Анимация при нажатии на ссылки навигации */
+                nav a:active {
+                    transform: scale(0.95);
+                }
 
-    .proj-cta:hover{transform:translateY(-4px); box-shadow:0 12px 30px rgba(20,40,100,0.35)}
+        main {
+            padding: 36px 0
+        }
 
-      .support-wrap {
-          display: flex;
-          justify-content: center;
-          padding: 48px 0;
-          margin-top: 100px; /* добавили отступ сверху */
-      }
+        /* Стили для секции "Hero" (главный блок) */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+            padding: 48px 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+            border-radius: 18px;
+            margin-bottom: 26px;
+        }
 
-    .big-support{
-      padding:28px 40px; border-radius:16px; font-size:18px; font-weight:800; letter-spacing:0.3px;
-      background: linear-gradient(90deg, rgba(20,36,80,0.55), rgba(40,24,70,0.45)); border:1px solid rgba(255,255,255,0.04);
-      backdrop-filter: blur(10px); box-shadow:0 18px 50px rgba(6,10,30,0.7); cursor:not-allowed; transform:translateZ(0);
-      transition:transform 220ms cubic-bezier(.2,.9,.3,1);
-    }
-    .big-support:hover{transform:scale(1.02)}
-    .big-support .pulse{
-      display:inline-block;padding:8px 14px;border-radius:12px;
-      background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));
-      box-shadow:0 10px 30px rgba(107,76,255,0.12);
-    }
+        .panels {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+        }
 
-    .reveal{opacity:0; transform: translateY(18px); transition:opacity 560ms var(--transition), transform 560ms var(--transition)}
-    .reveal.show{opacity:1; transform:none}
+        .panel {
+            flex: 1;
+            min-width: 260px;
+            max-width: 520px;
+            /* Обновленный градиент, который переходит от полупрозрачного белого сверху к полностью прозрачному снизу */
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.00));
+            border-radius: var(--radius);
+            padding: 20px;
+            backdrop-filter: blur(10px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: var(--card-shadow);
+            transition: transform var(--transition), box-shadow var(--transition);
+            opacity: 0;
+            transform: translateY(18px) scale(0.995);
+        }
 
-    @media (max-width:1000px){
-      .projects-grid{grid-template-columns: repeat(2,1fr)}
-      .panels{flex-direction:column}
-      .hero{padding:28px 16px}
-    }
-    @media (max-width:640px){
-      nav{display:none}
-      header{padding:12px}
-      .logo{width:44px;height:44px}
-      .projects-grid{grid-template-columns: 1fr}
-      .container{padding:18px}
-    }
+            .panel.visible {
+                opacity: 1;
+                transform: none
+            }
 
-    .center{text-align:center}
+        /* Стили для аватара */
+        .avatar {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 16px;
+            overflow: hidden;
+            display: block;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 12px 30px rgba(16, 20, 40, 0.7), 0 0 30px rgba(30, 144, 255, 0.05) inset;
+            background: linear-gradient(135deg, rgba(20, 30, 70, 0.6), rgba(10, 10, 20, 0.6));
+        }
 
-      .brand-minecraft {
-          color: #62b47a; /* зелёный Minecraft */
-          font-weight: 700;
-      }
+            .avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block
+            }
 
-      .brand-blender {
-          color: #f5792a; /* оранжевый Blender */
-          font-weight: 700;
-      }
+        /* Стили для текста "Обо мне" */
+        .about-text {
+            font-size: 16px;
+            color: var(--txt);
+            line-height: 1.45
+        }
 
-      .brand-telegram {
-          color: #0088cc; /* голубой Telegram */
-          font-weight: 700;
-      }
+        .about-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin-bottom: 8px
+        }
 
-      .brand-youtube {
-          color: #ff0000; /* красный YouTube */
-          font-weight: 700;
-      }
-      #projects {
-          margin-top: 40px; /* можно менять на 20px, 60px и т.д. */
-      }
+        .socials {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px
+        }
 
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: var(--glass-weak);
+            backdrop-filter: blur(6px);
+            transition: transform 220ms ease, box-shadow 220ms ease;
+            cursor: pointer;
+        }
 
-  </style>
+            /* Анимация при наведении на кнопки социальных сетей */
+            .social-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Анимация при нажатии на кнопки социальных сетей */
+            .social-btn:active {
+                transform: scale(0.95);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            }
+
+            .social-btn img {
+                width: 35px;
+                height: 35px;
+            }
+
+        /* Стили для секции "Проекты" */
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            margin-bottom: 12px;
+            transform: translateY(-6px);
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+        }
+
+        .project {
+            flex: 1 1 30%;
+            max-width: 340px;
+        }
+
+        .project {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform var(--transition), box-shadow var(--transition)
+        }
+
+            /* Анимация при наведении на проекты */
+            .project:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 30px rgba(7, 17, 50, 0.8);
+            }
+
+        .proj-img {
+            height: 160px;
+            display: block;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 420ms cubic-bezier(.2, .9, .3, 1)
+        }
+
+        /* Анимация увеличения изображения при наведении */
+        .project:hover .proj-img {
+            transform: scale(1.05);
+        }
+
+        .proj-body {
+            padding: 14px
+        }
+
+        .proj-title {
+            font-weight: 700;
+            font-size: 20px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .proj-desc {
+            color: var(--muted);
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .proj-cta {
+            margin-top: 12px;
+            display: inline-block;
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(6px);
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+            /* Анимация при наведении на кнопку "Подробнее" */
+            .proj-cta:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(20, 40, 100, 0.2);
+            }
+
+            /* Анимация при нажатии на кнопку "Подробнее" */
+            .proj-cta:active {
+                transform: scale(0.95);
+                box-shadow: 0 4px 15px rgba(20, 40, 100, 0.35);
+            }
+
+        /* Стили для ссылок на проекты (статья) */
+        .project a:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 0 8px 30px rgba(3, 8, 30, 0.7);
+        }
+
+        /* Стили для секции "Поддержать" */
+        .support-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 48px 0;
+            margin-top: 40px;
+        }
+
+        .big-support {
+            padding: 28px 40px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            background: linear-gradient(90deg, rgba(20, 36, 80, 0.55), rgba(40, 24, 70, 0.45));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 18px 50px rgba(6, 10, 30, 0.7);
+            cursor: not-allowed;
+            transform: translateZ(0);
+            transition: transform 220ms cubic-bezier(.2, .9, .3, 1);
+        }
+
+            /* Анимация при наведении на кнопку "Поддержать меня" */
+            .big-support:hover {
+                transform: translateY(-2px);
+            }
+
+            /* Анимация при нажатии на кнопку "Поддержать" */
+            .big-support:active {
+                transform: scale(0.98);
+            }
+
+            .big-support .pulse {
+                display: inline-block;
+                padding: 8px 14px;
+                border-radius: 12px;
+                background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+                box-shadow: 0 10px 30px rgba(107, 76, 255, 0.12);
+            }
+
+        /* Стили для анимации появления элементов при скролле */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 560ms var(--transition), transform 560ms var(--transition)
+        }
+
+            .reveal.show {
+                opacity: 1;
+                transform: none
+            }
+
+        /* Медиа-запросы для адаптивности на разных устройствах */
+        @media (max-width:1000px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .panels {
+                flex-direction: column
+            }
+
+            .hero {
+                padding: 28px 16px
+            }
+        }
+
+        @media (max-width:640px) {
+            nav {
+                display: none
+            }
+
+            header {
+                padding: 12px
+            }
+
+            .logo {
+                width: 44px;
+                height: 44px
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr
+            }
+
+            .container {
+                padding: 18px
+            }
+        }
+
+        /* Вспомогательные классы */
+        .center {
+            text-align: center
+        }
+
+        .brand-minecraft {
+            color: #62b47a;
+            font-weight: 700;
+        }
+
+        .brand-blender {
+            color: #f5792a;
+            font-weight: 700;
+        }
+
+        .brand-telegram {
+            color: #0088cc;
+            font-weight: 700;
+        }
+
+        .brand-youtube {
+            color: #ff0000;
+            font-weight: 700;
+        }
+
+        #projects {
+            margin-top: 40px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 14px 26px;
+            border-radius: var(--radius);
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--txt);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px) saturate(120%);
+            box-shadow: var(--card-shadow);
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+            /* Анимация при наведении на кнопку "Связаться со мной" */
+            .contact-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(3, 8, 30, 0.4);
+            }
+
+            /* Анимация при нажатии на кнопку "Связаться со мной" */
+            .contact-btn:active {
+                transform: scale(0.95);
+                box-shadow: 0 4px 15px rgba(3, 8, 30, 0.6);
+            }
+
+        .tiny-muted {
+            color: #9fb3d8;
+            font-size: 13px;
+        }
+    </style>
 </head>
 <body>
-  <div class="bg-animated" aria-hidden="true"></div>
+    <!-- Фоновое свечение, оставлено, так как оно статичное и не анимировано -->
+    <div class="bg-glow"></div>
 
-  <header id="pageHeader" class="container">
-    <div class="brand">
-      <div class="logo" aria-hidden="true">TR</div>
-      <div>
-        <div class="site-title">TheRatmir</div>
-        <div style="font-size:12px;color:var(--muted)">3D Артист и Контент мейкер</div>
-      </div>
-    </div>
-
-    <nav aria-label="Главная навигация">
-      <a href="#about">Обо мне</a>
-      <a href="#projects">Проекты</a>
-      <a href="#support">Поддержать</a>
-    </nav>
-  </header>
-
-  <main class="container" id="top">
-
-    <!-- About / Hero -->
-    <section id="about" class="hero reveal">
-      <div class="panels">
-        <div class="panel" data-reveal>
-            <div class="avatar" title="Аватар">
-                <img src="Images/Ava.webp" alt="Аватар TheRatmir">
+    <header id="siteHeader" class="fixed left-0 right-0 top-4 max-w-6xl mx-auto z-50 flex items-center justify-between p-3 rounded-xl backdrop-blur-md bg-[rgba(8,10,15,0.25)] border border-white/5">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl p-1 bg-gradient-to-br from-sky-600 to-indigo-600 shadow-lg flex items-center justify-center font-bold">TR</div>
+            <div>
+                <div class="font-bold">TheRatmir</div>
+                <div class="tiny-muted">3D Артист и Контент мейкер</div>
             </div>
         </div>
-
-        <div class="panel" data-reveal>
-            <div class="about-text">
-                <div class="about-title">Привет, я TheRatmir 👋</div>
-                <p>
-                    Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по
-                    <span class="brand-minecraft">Minecraft</span> в
-                    <span class="brand-blender">Blender</span>.
-                    Я делаю риги, рендеры, анимации и другие приколы; делюсь творчеством и жизнью в
-                    <span class="brand-telegram">Telegram</span>, а анимациями — на
-                    <span class="brand-youtube">YouTube</span>.
-                </p>
+        <nav class="hidden md:flex gap-6 items-center tiny-muted">
+            <!-- Убрал класс 'hover:underline', так как уже есть анимация с полосой -->
+            <a href="#about">Обо мне</a>
+            <a href="#projects">Проекты</a>
+            <a href="#support">Поддержать</a>
+        </nav>
+    </header>
 
 
-                <div class="socials" aria-hidden="false">
-                    <!-- YouTube -->
-                    <a class="social-btn" href="https://www.youtube.com/@TheRatmir153" target="_blank" rel="noopener noreferrer" title="YouTube">
-                        <img src="Images/YouTube.webp" alt="YouTube" style="width:35px; height:35px;">
-                    </a>
-
-                    <!-- Telegram -->
-                    <a class="social-btn" href="https://t.me/TheRatmir153" target="_blank" rel="noopener noreferrer" title="Telegram">
-                        <img src="Images/Telegram.webp" alt="Telegram" style="width:35px; height:35px;">
-                    </a>
-
-                    <!-- X (Twitter) -->
-                    <a class="social-btn" href="https://x.com/TheRatmir153" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-                        <img src="Images/X.webp" alt="X" style="width:35px; height:35px;">
-                    </a>
-
-                    <!-- TikTok -->
-                    <a class="social-btn" href="https://www.tiktok.com/@theratmir153?_t=ZS-8ykbqytkxs7&_r=1" target="_blank" rel="noopener noreferrer" title="TikTok">
-                        <img src="Images/TikTok.webp" alt="TikTok" style="width:35px; height:35px;">
-                    </a>
-
-                    <!-- NameMC -->
-                    <a class="social-btn" href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" rel="noopener noreferrer" title="NameMC">
-                        <img src="Images/NameMC.webp" alt="NameMC" style="width:35px; height:35px;">
-                    </a>
-
-                    <!-- Modrinth -->
-                    <a class="social-btn" href="https://modrinth.com/user/TheRatmir" target="_blank" rel="noopener noreferrer" title="Modrinth">
-                        <img src="Images/Modrinth.webp" alt="Modrinth" style="width:35px; height:35px;">
-                    </a>
-
+    <!-- Секция "Обо мне" -->
+    <!-- Изменен верхний отступ (margin-top) для того, чтобы опустить секцию ниже -->
+    <section id="about" class="hero reveal" style="margin-top:80px;">
+        <div class="panels" style="align-items: flex-start;">
+            <!-- Левая панель (аватар) -->
+            <div class="panel" data-reveal>
+                <div class="avatar" title="Аватар">
+                    <img src="Images/Ava.webp" alt="Аватар TheRatmir">
                 </div>
             </div>
+
+            <!-- Правая колонка с описанием и ссылками -->
+            <div style="display:flex; flex-direction:column; align-items:flex-start; margin-top:40px;">
+                <!-- Панель с описанием -->
+                <div class="panel" data-reveal style="margin-bottom:20px;">
+                    <div class="about-text">
+                        <div class="about-title">Привет, я TheRatmir 👋</div>
+                        <p>
+                            Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по
+                            <span class="brand-minecraft">Minecraft</span> в
+                            <span class="brand-blender">Blender</span>.
+                            Я делаю риги, рендеры, анимации и другие приколы; делюсь творчеством и жизнью в
+                            <span class="brand-telegram">Telegram</span>, а анимациями — на
+                            <span class="brand-youtube">YouTube</span>.
+                        </p>
+
+                        <div class="socials" aria-hidden="false">
+                            <!-- YouTube -->
+                            <a class="social-btn" href="https://www.youtube.com/@TheRatmir153" target="_blank" rel="noopener noreferrer" title="YouTube">
+                                <img src="Images/YouTube.webp" alt="YouTube" style="width:35px; height:35px;">
+                            </a>
+
+                            <!-- Telegram -->
+                            <a class="social-btn" href="https://t.me/TheRatmir153" target="_blank" rel="noopener noreferrer" title="Telegram">
+                                <img src="Images/Telegram.webp" alt="Telegram" style="width:35px; height:35px;">
+                            </a>
+
+                            <!-- X (Twitter) -->
+                            <a class="social-btn" href="https://x.com/TheRatmir153" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+                                <img src="Images/X.webp" alt="X" style="width:35px; height:35px;">
+                            </a>
+
+                            <!-- TikTok -->
+                            <a class="social-btn" href="https://www.tiktok.com/@theratmir153?_t=ZS-8ykbqytkxs7&_r=1" target="_blank" rel="noopener noreferrer" title="TikTok">
+                                <img src="Images/TikTok.webp" alt="TikTok" style="width:35px; height:35px;">
+                            </a>
+
+                            <!-- NameMC -->
+                            <a class="social-btn" href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" rel="noopener noreferrer" title="NameMC">
+                                <img src="Images/NameMC.webp" alt="NameMC" style="width:35px; height:35px;">
+                            </a>
+
+                            <!-- Modrinth -->
+                            <a class="social-btn" href="https://modrinth.com/user/TheRatmir" target="_blank" rel="noopener noreferrer" title="Modrinth">
+                                <img src="Images/Modrinth.webp" alt="Modrinth" style="width:35px; height:35px;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка "Связаться со мной" -->
+                <a class="contact-btn" href="https://t.me/TheRatmirBot" target="_blank" rel="noopener noreferrer" style="margin-left:0;">
+                    Связаться со мной
+                </a>
+
+                <!-- Текст под кнопкой -->
+                <p style="margin-top:8px; font-size:14px; color:var(--muted); margin-left:0;">
+                    Писать только по важным вопросам! Тупые сообщения будут игнорироваться.
+                </p>
+            </div>
         </div>
-      </div>
     </section>
 
+    <!-- Разделительная полоска, перемещенная над секцией "Мои проекты" -->
+    <div class="h-px w-1/2 mx-auto my-2"
+         style="background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);">
+    </div>
+
+    <!-- Секция "Мои проекты" -->
     <section id="projects" class="reveal">
-<div style="text-align:center; margin-bottom:12px">
-  <div class="section-title">Мои проекты</div>
-</div>
-
-
-<div class="projects-grid" id="projectsGrid">
-    <article class="project reveal">
-        <a href="https://theratmir.github.io/TheRig/" target="_blank" rel="noopener noreferrer">
-            <img class="proj-img" src="https://theratmir.github.io/TheRig/Images/TheRig%20Preview.webp" alt="TheRig">
-        </a>
-        <div class="proj-body">
-            <div class="proj-title">TheRig</div>
-            <p class="proj-desc">Простой, но хороший Minecraft риг для Blender 4.2+</p>
-            <a class="proj-cta" href="https://theratmir.github.io/TheRig/index.html" target="_blank" rel="noopener noreferrer">Подробнее</a>
+        <div style="text-align:center; margin-bottom:12px">
+            <div class="section-title">Мои проекты</div>
         </div>
-    </article>
 
-    <article class="project reveal">
-        <a href="https://modrinth.com/resourcepack/emotebend" target="_blank" rel="noopener noreferrer">
-            <img class="proj-img" src="https://cdn.modrinth.com/data/R7AmfT2N/images/81d664f1817af789eb522faa195173b83ae97069.png" alt="EmoteBend">
-        </a>
-        <div class="proj-body">
-            <div class="proj-title">EmoteBend</div>
-            <p class="proj-desc">Делает изгибы из Emotecraft рабочими.</p>
-            <a class="proj-cta" href="https://modrinth.com/resourcepack/emotebend" target="_blank" rel="noopener noreferrer">Подробнее</a>
+        <div class="projects-grid" id="projectsGrid">
+            <!-- Проект: TheRig -->
+            <article class="project reveal">
+                <a href="https://theratmir.github.io/TheRig/" target="_blank" rel="noopener noreferrer">
+                    <img class="proj-img" src="https://theratmir.github.io/TheRig/Images/TheRig%20Preview.webp" alt="TheRig">
+                </a>
+                <div class="proj-body">
+                    <div class="proj-title">TheRig</div>
+                    <p class="proj-desc">Простой, но хороший Minecraft риг для Blender 4.2+</p>
+                    <a class="proj-cta" href="https://theratmir.github.io/TheRig/index.html" target="_blank" rel="noopener noreferrer">Подробнее</a>
+                </div>
+            </article>
+
+            <!-- Проект: EmoteBend -->
+            <article class="project reveal">
+                <a href="https://modrinth.com/resourcepack/emotebend" target="_blank" rel="noopener noreferrer">
+                    <img class="proj-img" src="https://cdn.modrinth.com/data/R7AmfT2N/images/81d664f1817af789eb522faa195173b83ae97069.png" alt="EmoteBend">
+                </a>
+                <div class="proj-body">
+                    <div class="proj-title">EmoteBend</div>
+                    <p class="proj-desc">Делает изгибы из Emotecraft рабочими.</p>
+                    <a class="proj-cta" href="https://modrinth.com/resourcepack/emotebend" target="_blank" rel="noopener noreferrer">Подробнее</a>
+                </div>
+            </article>
         </div>
-    </article>
-
-
-</div>
     </section>
 
+    <!-- Секция "Поддержать меня" -->
     <section id="support" class="support-wrap reveal">
-      <div class="big-support" aria-disabled="true">
-        <span class="pulse">Поддержать меня (Пока не работает)</span>
-      </div>
+        <div class="big-support" aria-disabled="true">
+            <span class="pulse">Поддержать меня (Пока не работает)</span>
+        </div>
     </section>
 
-  </main>
+    </main>
 
-  <script>
-    (function(){
-      const header = document.getElementById('pageHeader');
-      let lastScroll = 0;
-      window.addEventListener('scroll', ()=>{
-        const s = window.scrollY;
-        if(s>60) header.classList.add('small'); else header.classList.remove('small');
-        lastScroll = s;
-      }, {passive:true});
-    })();
+    <script>
+        // Код для анимации появления элементов при скролле
+        (function () {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('show');
+                        e.target.classList.add('visible');
+                        io.unobserve(e.target);
+                    }
+                })
+            }, { threshold: 0.12 });
 
-    (function(){
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            e.target.classList.add('show');
-            e.target.classList.add('visible');
-            io.unobserve(e.target);
-          }
-        })
-      },{threshold:0.12});
+            document.querySelectorAll('[data-reveal], .reveal').forEach(el => io.observe(el));
+        })();
 
-      document.querySelectorAll('[data-reveal], .reveal').forEach(el=> io.observe(el));
-    })();
+        // Код для плавного скролла к секциям по клику на ссылки в меню
+        (function () {
+            document.querySelectorAll('a[href^="#"]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const href = a.getAttribute('href');
+                    if (href.length > 1) {
+                        e.preventDefault();
+                        document.querySelector(href).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        history.replaceState(null, '', href);
+                    }
+                })
+            })
+        })();
 
-    (function(){
-      document.querySelectorAll('a[href^="#"]').forEach(a=>{
-        a.addEventListener('click', (e)=>{
-          const href = a.getAttribute('href');
-          if(href.length>1){
-            e.preventDefault();
-            document.querySelector(href).scrollIntoView({behavior:'smooth', block:'start'});
-            history.replaceState(null,'',href);
-          }
-        })
-      })
-    })();
-
-    (function(){
-      const bg = document.querySelector('.bg-animated');
-      window.addEventListener('scroll', ()=>{
-        const y = window.scrollY;
-        bg.style.transform = `translateY(${y * -0.03}px)`;
-      }, {passive:true});
-    })();
-
-    document.querySelectorAll('.social-btn').forEach(btn=> btn.addEventListener('keydown',(e)=>{
-      if(e.key === 'Enter') btn.click();
-    }));
-  </script>
+        // Код для обработки нажатия клавиши Enter на кнопках социальных сетей
+        document.querySelectorAll('.social-btn').forEach(btn => btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') btn.click();
+        }));
+    </script>
 </body>
 </html>
-
-
-
-
-
