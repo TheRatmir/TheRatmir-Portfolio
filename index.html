@@ -1,716 +1,958 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>TheRatmir — Портфолио</title>
-
-    <!-- Google Fonts для стилей шрифтов -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS CDN для утилитарных классов -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TheRatmir - 3D Artist & Content Maker</title>
+    <!-- Подключение иконок Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* CSS-переменные для легкой настройки цветов и размеров */
         :root {
-            --bg: #000000; /* OLED black */
-            --deep-blue: #071132;
-            --accent-purple: #6b4cff;
-            --accent-blue: #1e90ff;
-            --glass-weak: rgba(255, 255, 255, 0.04);
-            --glass-strong: rgba(255, 255, 255, 0.06);
-            --txt: #dbe9ff;
-            --muted: #9fb2d8;
-            --radius: 14px;
-            --transition: 300ms cubic-bezier(.2, .9, .3, 1);
-            --card-shadow: 0 6px 20px rgba(7, 17, 50, 0.6);
+            /* Палитра из референса (Obsidian Dark) */
+            --bg-depth: #000000;
+            --bg-surface: #0a0a0c;
+            --bg-panel: rgba(20, 20, 24, 0.7);
+            /* Акцентные цвета */
+            --accent-primary: #3b82f6;
+            --accent-vibrant: #60a5fa;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            /* Текст */
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #475569;
+            --text-warning: #64748b; /* Серый для предупреждения */
+            /* Стекло и Материалы */
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shine: rgba(255, 255, 255, 0.03);
+            --blur-amt: 24px;
+            /* Метрики */
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Переменные для эффекта свечения */
+            --mouse-x: 0px;
+            --mouse-y: 0px;
+            --shine-color: var(--accent-vibrant);
         }
 
-        /* Глобальные стили для всех элементов */
-        * {
-            box-sizing: border-box
+        /* Сброс стилей */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
-            height: 100%;
-            min-height: 100%;
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-depth);
+            color: var(--text-primary);
+            overflow-x: hidden;
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
             min-height: 100vh;
-            /* Обновленный градиентный фон, который растягивается на всю высоту */
-            background: linear-gradient(180deg, #000000 0%, #030312 100%);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: 100% 100%; /* Растягивает фон на 100% ширины и 100% высоты */
-            color: #e6eef8;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Стили для фонового свечения (оставляем, так как оно статичное) */
-        .bg-glow {
+        /* Фоновый градиент (Ambient Background) */
+        .ambient-mesh {
             position: fixed;
-            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
             z-index: -1;
-            background: radial-gradient(40rem 20rem at 10% 10%, rgba(14,165,233,0.08), transparent 10%), radial-gradient(36rem 20rem at 90% 30%, rgba(124,58,237,0.06), transparent 10%);
-            filter: blur(36px) saturate(120%);
+            background: radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%), radial-gradient(circle at 85% 60%, rgba(99, 102, 241, 0.06) 0%, transparent 40%);
         }
 
-        /* Контейнер для центрирования контента */
-        .container {
-            max-width: 1100px;
+        /* Типографика */
+        h1, h2, h3, .btn {
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(180deg, #fff 20%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+            h2::before {
+                content: '';
+                display: block;
+                width: 6px;
+                height: 24px;
+                background: var(--accent-primary);
+                border-radius: 4px;
+                box-shadow: 0 0 12px var(--accent-glow);
+            }
+
+        /* Класс для центрированных заголовков без полоски */
+        .centered-heading {
+            justify-content: center;
+        }
+
+            .centered-heading::before {
+                content: none;
+            }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* Разделитель */
+        .divider {
+            width: 100%;
+            height: 1px;
+            margin: 60px 0 60px;
+            background: linear-gradient( to right, transparent 0%, rgba(255, 255, 255, 0.3) 30%, rgba(255, 255, 255, 0.3) 70%, transparent 100% );
+        }
+
+        /* Glass Surface (Базовый стиль для карточек и панелей) */
+        .surface {
+            background: var(--bg-panel);
+            backdrop-filter: blur(var(--blur-amt));
+            -webkit-backdrop-filter: blur(var(--blur-amt));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 0 0 1px var(--glass-shine) inset, 0 20px 40px -10px rgba(0,0,0,0.5);
+            transition: transform 0.3s var(--easing), border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* --- HEADER --- */
+        .header-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 24px 0;
+            pointer-events: none;
+        }
+
+        .nav-header {
+            position: relative;
             margin: 0 auto;
-            padding: 28px
-        }
-
-        /* Стили для шапки сайта */
-        header {
-            position: sticky;
-            top: 18px;
-            z-index: 50;
+            max-width: 1280px;
+            width: 100%;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 18px 24px;
-            margin: 0 12px;
-            border-radius: 16px;
-            backdrop-filter: blur(8px) saturate(120%);
-            background: linear-gradient(180deg, rgba(10, 12, 20, 0.45), rgba(6, 8, 20, 0.25));
-            box-shadow: 0 4px 30px rgba(2, 3, 8, 0.6);
-            transition: transform var(--transition), padding 240ms ease, backdrop-filter 240ms ease;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .brand {
-            display: flex;
             align-items: center;
-            gap: 14px
+            padding: 12px 24px;
+            pointer-events: all;
+            background: rgba(5, 5, 8, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease-in-out;
         }
 
         .logo {
-            width: 48px;
-            height: 48px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon-box {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
             border-radius: 10px;
-            display: grid;
-            place-items: center;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--deep-blue), rgba(40, 20, 100, 0.35));
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 -6px 18px rgba(255, 255, 255, 0.02);
-            color: var(--txt);
-            font-family: 'Montserrat', sans-serif;
+            border: 1px solid var(--glass-border);
         }
 
-        .site-title {
-            font-weight: 700;
-            letter-spacing: 0.2px
-        }
-
-        nav {
+        .logo-text-group {
             display: flex;
-            gap: 12px;
-            align-items: center
+            flex-direction: column;
         }
 
-            nav a {
-                padding: 8px 12px;
-                border-radius: 10px;
-                text-decoration: none;
-                color: var(--muted);
-                font-weight: 600;
-                font-size: 15px;
-                transition: all var(--transition);
-                position: relative;
-                overflow: visible;
+        .logo-main {
+            font-weight: 800;
+            font-size: 1.25rem;
+            line-height: 1.1;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #ffffff; /* Белый цвет текста */
+            margin-top: 2px;
+            letter-spacing: 0.01em;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+            position: relative; /* Для позиционирования линии */
+        }
+
+            .nav-link:hover {
+                color: #fff;
             }
 
-                nav a:focus {
-                    outline: 2px solid rgba(255, 255, 255, 0.06)
-                }
+            /* Анимированная линия подчеркивания */
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -4px; /* Отступ линии от текста */
+                width: 0;
+                height: 2px; /* Толщина линии */
+                background-color: var(--accent-primary);
+                transition: width 0.3s ease; /* Плавная анимация */
+                border-radius: 2px;
+            }
 
-                nav a::after {
-                    content: "";
-                    position: absolute;
-                    left: 12px;
-                    right: 12px;
-                    bottom: 2px;
-                    height: 2px;
-                    border-radius: 2px;
-                    transform-origin: left;
-                    transform: scaleX(0);
-                    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-                    transition: transform 260ms ease;
-                }
+            .nav-link:hover::after {
+                width: 100%;
+            }
 
-                /* Анимация при наведении на ссылки в навигации */
-                nav a:hover {
-                    color: var(--txt);
-                    transform: translateY(-2px);
-                }
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 8px 14px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-                    nav a:hover::after {
-                        transform: scaleX(1)
-                    }
+            .lang-toggle:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
+                border-color: rgba(255, 255, 255, 0.2);
+            }
 
-                /* Анимация при нажатии на ссылки навигации */
-                nav a:active {
-                    transform: scale(0.95);
-                }
-
+        /* --- MAIN LAYOUT --- */
         main {
-            padding: 36px 0
-        }
-
-        /* Стили для секции "Hero" (главный блок) */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 36px;
-            padding: 48px 0;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
-            border-radius: 18px;
-            margin-bottom: 26px;
-        }
-
-        .panels {
-            display: flex;
-            gap: 28px;
-            align-items: center;
             width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 140px 24px 60px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- ABOUT SECTION (Обновлено: Увеличен Размер) --- */
+        .about-section {
+            display: flex;
+            flex-direction: row;
             justify-content: center;
+            align-items: center;
+            gap: 48px; /* Увеличил отступ */
+            margin: 0 auto;
+            max-width: 100%;
         }
 
-        .panel {
-            flex: 1;
-            min-width: 260px;
-            max-width: 520px;
-            /* Обновленный градиент, который переходит от полупрозрачного белого сверху к полностью прозрачному снизу */
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.00));
-            border-radius: var(--radius);
-            padding: 20px;
-            backdrop-filter: blur(10px) saturate(120%);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: var(--card-shadow);
-            transition: transform var(--transition), box-shadow var(--transition);
-            opacity: 0;
-            transform: translateY(18px) scale(0.995);
-        }
-
-            .panel.visible {
-                opacity: 1;
-                transform: none
-            }
-
-        /* Стили для аватара */
-        .avatar {
+        .avatar-box {
             width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 16px;
+            max-width: 500px; /* Было 420px -> 500px */
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius-xl);
             overflow: hidden;
-            display: block;
+            border: 1px solid var(--glass-border);
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: 0 12px 30px rgba(16, 20, 40, 0.7), 0 0 30px rgba(30, 144, 255, 0.05) inset;
-            background: linear-gradient(135deg, rgba(20, 30, 70, 0.6), rgba(10, 10, 20, 0.6));
+            flex-shrink: 0;
         }
 
-            .avatar img {
+            .avatar-box img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                display: block
             }
 
-        /* Стили для текста "Обо мне" */
-        .about-text {
-            font-size: 16px;
-            color: var(--txt);
-            line-height: 1.45
-        }
-
-        .about-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            margin-bottom: 8px
-        }
-
-        .socials {
+        /* Обертка для правой колонки (текст + соцсети + кнопка) */
+        .about-right-wrapper {
             display: flex;
+            flex-direction: column;
+            gap: 24px; /* Немного увеличил отступ (20 -> 24) */
+            max-width: 600px; /* Было 500px -> 600px */
+            width: 100%;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 24px;
+            padding: 32px; /* Увеличил паддинг (24 -> 32) */
+        }
+
+        .about-title-row {
+            display: flex;
+            align-items: center;
             gap: 12px;
-            margin-top: 16px
+            font-size: 2.2rem; /* Увеличил шрифт заголовка (1.8 -> 2.2) */
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Увеличенный шрифт для текста описания в этой секции */
+        .about-content p {
+            font-size: 1.2rem; /* (1.05 -> 1.2) */
+        }
+
+        /* Контейнеры для соцсетей и контактов */
+        .social-group {
+            width: 100%;
+        }
+
+        .contact-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Прижать влево на десктопе */
+        }
+
+        .social-grid {
+            display: flex;
+            gap: 14px; /* Чуть увеличил отступ кнопок */
+            flex-wrap: wrap;
+            padding: 0;
         }
 
         .social-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: grid;
-            place-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            background: var(--glass-weak);
-            backdrop-filter: blur(6px);
-            transition: transform 220ms ease, box-shadow 220ms ease;
+            /* Увеличенные размеры для лучшего вида иконок */
+            width: 56px; /* Было 52 -> 56 */
+            height: 56px; /* Было 52 -> 56 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; /* Увеличенный радиус */
+            color: var(--text-secondary);
+            transition: all 0.2s;
             cursor: pointer;
+            text-decoration: none;
+            overflow: hidden; /* Обрезаем, если иконка выходит за границы */
         }
-
-            /* Анимация при наведении на кнопки социальных сетей */
-            .social-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            }
-
-            /* Анимация при нажатии на кнопки социальных сетей */
-            .social-btn:active {
-                transform: scale(0.95);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            }
-
+            /* Стили для вставленных изображений */
             .social-btn img {
-                width: 35px;
-                height: 35px;
+                width: 34px; /* Увеличил иконку (32 -> 34) */
+                height: 34px;
+                object-fit: contain;
+                border-radius: 50%; /* На случай, если иконка квадратная */
             }
 
-        /* Стили для секции "Проекты" */
-        .section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 42px;
-            margin-bottom: 12px;
-            transform: translateY(-6px);
+            .social-btn:hover {
+                transform: translateY(-3px);
+                color: #fff;
+                border-color: var(--brand-color);
+                background: var(--brand-bg, rgba(255,255,255,0.1));
+                box-shadow: 0 4px 12px var(--brand-glow, rgba(0,0,0,0));
+            }
+
+        .btn-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            height: 54px; /* Увеличил высоту (48 -> 54) */
+            padding: 0 32px; /* Увеличил паддинг */
+            border-radius: 16px;
+            background: var(--accent-primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.05rem; /* Чуть больше шрифт кнопки */
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s var(--easing), box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            z-index: 1;
         }
 
+            .btn-contact:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
+            }
+
+        .warning-text {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            max-width: 450px; /* Увеличил макс ширину */
+            text-align: left;
+        }
+
+        /* --- PROJECTS SECTION --- */
         .projects-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
             justify-content: center;
+            gap: 24px;
+            width: 100%;
         }
 
-        .project {
-            flex: 1 1 30%;
-            max-width: 340px;
-        }
-
-        .project {
-            border-radius: 12px;
+        /* Модифицированные стили для карточек (Фиксированные размеры) */
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 400px; /* Фиксированная высота */
+            width: 360px; /* Фиксированная ширина */
             overflow: hidden;
             position: relative;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: transform var(--transition), box-shadow var(--transition)
+            flex: 0 0 auto; /* Запрещаем flex-растягивание */
+            max-width: 90vw; /* Адаптив для мобилок */
         }
 
-            /* Анимация при наведении на проекты */
-            .project:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 8px 30px rgba(7, 17, 50, 0.8);
+            .card:hover {
+                transform: translateY(-6px);
+                border-color: rgba(255,255,255,0.2);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             }
 
-        .proj-img {
-            height: 160px;
+        .card-img-box {
             display: block;
-            width: 100%;
-            object-fit: cover;
-            transition: transform 420ms cubic-bezier(.2, .9, .3, 1)
+            height: 200px;
+            background: #111;
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            text-decoration: none;
         }
 
-        /* Анимация увеличения изображения при наведении */
-        .project:hover .proj-img {
+            .card-img-box img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s;
+            }
+
+        .card:hover .card-img-box img {
             transform: scale(1.05);
         }
 
-        .proj-body {
-            padding: 14px
-        }
-
-        .proj-title {
-            font-weight: 700;
-            font-size: 20px;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .proj-desc {
-            color: var(--muted);
-            font-size: 16px;
-            margin-top: 8px;
-        }
-
-        .proj-cta {
-            margin-top: 12px;
-            display: inline-block;
-            padding: 14px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            color: white;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(6px);
-            transition: transform var(--transition), box-shadow var(--transition);
-        }
-
-            /* Анимация при наведении на кнопку "Подробнее" */
-            .proj-cta:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 15px rgba(20, 40, 100, 0.2);
-            }
-
-            /* Анимация при нажатии на кнопку "Подробнее" */
-            .proj-cta:active {
-                transform: scale(0.95);
-                box-shadow: 0 4px 15px rgba(20, 40, 100, 0.35);
-            }
-
-        /* Стили для ссылок на проекты (статья) */
-        .project a:active {
-            transform: translateY(2px) scale(0.98);
-            box-shadow: 0 8px 30px rgba(3, 8, 30, 0.7);
-        }
-
-        /* Стили для секции "Поддержать" */
-        .support-wrap {
+        .card-body {
+            padding: 24px;
+            flex-grow: 1;
             display: flex;
-            justify-content: center;
-            padding: 48px 0;
-            margin-top: 40px;
+            flex-direction: column;
+            overflow: hidden; /* Скрываем переполнение, если текст все равно слишком большой */
         }
 
-        .big-support {
-            padding: 28px 40px;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-            background: linear-gradient(90deg, rgba(20, 36, 80, 0.55), rgba(40, 24, 70, 0.45));
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 18px 50px rgba(6, 10, 30, 0.7);
-            cursor: not-allowed;
-            transform: translateZ(0);
-            transition: transform 220ms cubic-bezier(.2, .9, .3, 1);
-        }
-
-            /* Анимация при наведении на кнопку "Поддержать меня" */
-            .big-support:hover {
-                transform: translateY(-2px);
-            }
-
-            /* Анимация при нажатии на кнопку "Поддержать" */
-            .big-support:active {
-                transform: scale(0.98);
-            }
-
-            .big-support .pulse {
-                display: inline-block;
-                padding: 8px 14px;
-                border-radius: 12px;
-                background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-                box-shadow: 0 10px 30px rgba(107, 76, 255, 0.12);
-            }
-
-        /* Стили для анимации появления элементов при скролле */
-        .reveal {
-            opacity: 0;
-            transform: translateY(18px);
-            transition: opacity 560ms var(--transition), transform 560ms var(--transition)
-        }
-
-            .reveal.show {
-                opacity: 1;
-                transform: none
-            }
-
-        /* Медиа-запросы для адаптивности на разных устройствах */
-        @media (max-width:1000px) {
-            .projects-grid {
-                grid-template-columns: repeat(2, 1fr)
-            }
-
-            .panels {
-                flex-direction: column
-            }
-
-            .hero {
-                padding: 28px 16px
-            }
-        }
-
-        @media (max-width:640px) {
-            nav {
-                display: none
-            }
-
-            header {
-                padding: 12px
-            }
-
-            .logo {
-                width: 44px;
-                height: 44px
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr
-            }
-
-            .container {
-                padding: 18px
-            }
-        }
-
-        /* Вспомогательные классы */
-        .center {
-            text-align: center
-        }
-
-        .brand-minecraft {
-            color: #62b47a;
+        .card-title {
+            font-size: 1.2rem;
             font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            flex-shrink: 0;
         }
 
-        .brand-blender {
-            color: #f5792a;
-            font-weight: 700;
+        .card-desc {
+            font-size: 0.95rem; /* Базовый размер */
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            flex-grow: 1;
+            line-height: 1.5;
+            overflow: hidden; /* Для работы скрипта по подгону размера */
+            display: flex;
+            flex-direction: column;
         }
 
-        .brand-telegram {
-            color: #0088cc;
-            font-weight: 700;
-        }
-
-        .brand-youtube {
-            color: #ff0000;
-            font-weight: 700;
-        }
-
-        #projects {
-            margin-top: 40px;
-        }
-
-        .contact-btn {
-            display: inline-block;
-            padding: 14px 26px;
-            border-radius: var(--radius);
-            font-size: 17px;
-            font-weight: 700;
+        .card-btn {
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
             text-decoration: none;
-            color: var(--txt);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px) saturate(120%);
-            box-shadow: var(--card-shadow);
-            transition: transform var(--transition), box-shadow var(--transition);
+            display: block;
+            width: 100%;
+            flex-shrink: 0; /* Кнопка не сжимается */
         }
 
-            /* Анимация при наведении на кнопку "Связаться со мной" */
-            .contact-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 15px rgba(3, 8, 30, 0.4);
+            .card-btn:hover {
+                background: var(--accent-primary);
+                border-color: var(--accent-primary);
+                transform: translateY(-1px);
             }
 
-            /* Анимация при нажатии на кнопку "Связаться со мной" */
-            .contact-btn:active {
-                transform: scale(0.95);
-                box-shadow: 0 4px 15px rgba(3, 8, 30, 0.6);
+        /* --- SUPPORT SECTION --- */
+        .support-section {
+            text-align: center;
+            padding-bottom: 40px;
+        }
+
+        .btn-support {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            height: 56px;
+            padding: 0 36px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            cursor: not-allowed; /* Пока не работает */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+            /* SHINE EFFECT */
+            .btn-contact::before,
+            .card-btn::before,
+            .btn-support::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+                border-radius: inherit;
+                -webkit-mask-image: radial-gradient(circle at var(--mouse-x) var(--mouse-y), white 5%, transparent 40%);
+                mask-image: radial-gradient(circle at var(--mouse-x) var(--mouse-y), white 5%, transparent 40%);
+                background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--shine-color) 0%, transparent 100%);
+                opacity: 0;
+                transition: opacity 0.3s;
+                will-change: opacity;
             }
 
-        .tiny-muted {
-            color: #9fb3d8;
-            font-size: 13px;
+        .btn-contact:hover::before,
+        .card-btn:hover::before {
+            opacity: 0.8;
+        }
+
+        /* Адаптив */
+        @media (max-width: 1100px) { /* Увеличил брейкпоинт (был 1024), так как элементы стали шире */
+            .about-section {
+                flex-direction: column; /* Вертикальный стек на мобильном */
+                text-align: center;
+            }
+
+            .avatar-box {
+                max-width: 380px; /* Уменьшаем аватарку на планшете */
+            }
+
+            .about-right-wrapper {
+                align-items: center; /* Центрируем содержимое правой колонки */
+                max-width: 100%;
+            }
+
+            .about-content {
+                align-items: center;
+                padding: 32px 20px;
+            }
+
+            .contact-group {
+                align-items: center; /* Центрируем кнопку и предупреждение */
+            }
+
+            .warning-text {
+                text-align: center;
+            }
+
+            .social-grid {
+                justify-content: center;
+            }
+
+            .nav-header {
+                padding: 12px 16px;
+            }
+
+            .nav-actions {
+                gap: 12px;
+            }
+
+            .nav-links {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-link {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .avatar-box {
+                max-width: 300px; /* Еще меньше на телефоне */
+            }
+
+            .about-title-row {
+                font-size: 1.8rem; /* Возвращаем стандартный размер на мобилке */
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Фоновое свечение, оставлено, так как оно статичное и не анимировано -->
-    <div class="bg-glow"></div>
 
-    <header id="siteHeader" class="fixed left-0 right-0 top-4 max-w-6xl mx-auto z-50 flex items-center justify-between p-3 rounded-xl backdrop-blur-md bg-[rgba(8,10,15,0.25)] border border-white/5">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl p-1 bg-gradient-to-br from-sky-600 to-indigo-600 shadow-lg flex items-center justify-center font-bold">TR</div>
-            <div>
-                <div class="font-bold">TheRatmir</div>
-                <div class="tiny-muted">3D Артист и Контент мейкер</div>
-            </div>
-        </div>
-        <nav class="hidden md:flex gap-6 items-center tiny-muted">
-            <!-- Убрал класс 'hover:underline', так как уже есть анимация с полосой -->
-            <a href="#about">Обо мне</a>
-            <a href="#projects">Проекты</a>
-            <a href="#support">Поддержать</a>
-        </nav>
-    </header>
+    <div class="ambient-mesh"></div>
 
-
-    <!-- Секция "Обо мне" -->
-    <!-- Изменен верхний отступ (margin-top) для того, чтобы опустить секцию ниже -->
-    <section id="about" class="hero reveal" style="margin-top:80px;">
-        <div class="panels" style="align-items: flex-start;">
-            <!-- Левая панель (аватар) -->
-            <div class="panel" data-reveal>
-                <div class="avatar" title="Аватар">
-                    <img src="Images/Ava.webp" alt="Аватар TheRatmir">
+    <div class="header-wrapper">
+        <header class="nav-header">
+            <!-- Слева иконка и надписи -->
+            <a href="#" class="logo">
+                <div class="logo-icon-box">
+                    <!-- Заменена иконка "box" на "zap" (молния) -->
+                    <i data-lucide="zap" style="color: var(--accent-primary); width: 24px; height: 24px;"></i>
                 </div>
+                <div class="logo-text-group">
+                    <span class="logo-main">TheRatmir</span>
+                    <!-- Текст "3D Артист и Контент мейкер" белый -->
+                    <span class="logo-subtitle" data-i18n="header_role">3D Артист и Контент мейкер</span>
+                </div>
+            </a>
+
+            <!-- Справа навигация и язык -->
+            <div class="nav-actions">
+                <nav class="nav-links">
+                    <!-- Обновленные ссылки -->
+                    <a href="#" class="nav-link" data-i18n="nav_about">Обо мне</a>
+                    <a href="#projects" class="nav-link" data-i18n="nav_projects">Проекты</a>
+                    <a href="#bottom" class="nav-link" data-i18n="nav_support">Поддержать</a>
+                </nav>
+
+                <button id="langToggle" class="lang-toggle">
+                    <i data-lucide="globe" style="width:16px; height:16px;"></i>
+                    <span id="langLabel">EN</span>
+                </button>
+            </div>
+        </header>
+    </div>
+
+    <main>
+
+        <!-- Секция Обо мне (ОБНОВЛЕННАЯ СТРУКТУРА) -->
+        <section id="about" class="about-section">
+            <div class="avatar-box surface">
+                <!-- АВАТАРКА: удален onerror -->
+                <img src="Images/Ava.webp" alt="Avatar">
             </div>
 
-            <!-- Правая колонка с описанием и ссылками -->
-            <div style="display:flex; flex-direction:column; align-items:flex-start; margin-top:40px;">
-                <!-- Панель с описанием -->
-                <div class="panel" data-reveal style="margin-bottom:20px;">
-                    <div class="about-text">
-                        <div class="about-title">Привет, я TheRatmir 👋</div>
-                        <p>
-                            Я 3D-художник и контент-креатор. Специализируюсь на создании визуального контента по
-                            <span class="brand-minecraft">Minecraft</span> в
-                            <span class="brand-blender">Blender</span>.
-                            Я делаю риги, рендеры, анимации и другие приколы; делюсь творчеством и жизнью в
-                            <span class="brand-telegram">Telegram</span>, а анимациями — на
-                            <span class="brand-youtube">YouTube</span>.
-                        </p>
+            <!-- Новая обертка для правой колонки -->
+            <div class="about-right-wrapper">
 
-                        <div class="socials" aria-hidden="false">
-                            <!-- YouTube -->
-                            <a class="social-btn" href="https://www.youtube.com/@TheRatmir153" target="_blank" rel="noopener noreferrer" title="YouTube">
-                                <img src="Images/YouTube.webp" alt="YouTube" style="width:35px; height:35px;">
-                            </a>
+                <div class="about-content surface">
+                    <div class="about-title-row">
+                        <span data-i18n="about_greeting">Привет я TheRatmir</span> 👋
+                    </div>
 
-                            <!-- Telegram -->
-                            <a class="social-btn" href="https://t.me/TheRatmir153" target="_blank" rel="noopener noreferrer" title="Telegram">
-                                <img src="Images/Telegram.webp" alt="Telegram" style="width:35px; height:35px;">
-                            </a>
+                    <p data-i18n="about_desc">
+                        Я 3D художник и контент креатор работающий в <span style="color: #a3e635;">TeaTeam</span>. Специализируюсь на создании визуального контента по <span style="color: #4ade80;">Minecraft</span> в <span style="color: #fb923c;">Blender</span>. Я делаю риги, рендеры, анимации и другие приколы. Делюсь творчеством и жизнью в <span style="color: #38bdf8;">Telegram</span>, а анимациями на <span style="color: #f87171;">YouTube</span>. Иногда стримлю на <span style="color: #a855f7;">Twitch</span>
+                    </p>
+                </div>
 
-                            <!-- X (Twitter) -->
-                            <a class="social-btn" href="https://x.com/TheRatmir153" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-                                <img src="Images/X.webp" alt="X" style="width:35px; height:35px;">
-                            </a>
-
-                            <!-- TikTok -->
-                            <a class="social-btn" href="https://www.tiktok.com/@theratmir153?_t=ZS-8ykbqytkxs7&_r=1" target="_blank" rel="noopener noreferrer" title="TikTok">
-                                <img src="Images/TikTok.webp" alt="TikTok" style="width:35px; height:35px;">
-                            </a>
-
-                            <!-- NameMC -->
-                            <a class="social-btn" href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" rel="noopener noreferrer" title="NameMC">
-                                <img src="Images/NameMC.webp" alt="NameMC" style="width:35px; height:35px;">
-                            </a>
-
-                            <!-- Modrinth -->
-                            <a class="social-btn" href="https://modrinth.com/user/TheRatmir" target="_blank" rel="noopener noreferrer" title="Modrinth">
-                                <img src="Images/Modrinth.webp" alt="Modrinth" style="width:35px; height:35px;">
-                            </a>
-                        </div>
+                <!-- Группа Соц. сетей -->
+                <div class="social-group">
+                    <div class="social-grid">
+                        <!-- YouTube -->
+                        <a href="https://www.youtube.com/@TheRatmir153" target="_blank" class="social-btn" title="YouTube" style="--brand-color: #ff0000; --brand-glow: rgba(255, 0, 0, 0.4);">
+                            <img src="Images/YouTube.webp" alt="YouTube Icon">
+                        </a>
+                        <!-- Telegram -->
+                        <a href="https://t.me/TheRatmir153" target="_blank" class="social-btn" title="Telegram" style="--brand-color: #0088cc; --brand-glow: rgba(0, 136, 204, 0.4);">
+                            <img src="Images/Telegram.webp" alt="Telegram Icon">
+                        </a>
+                        <!-- Twitch (Новая кнопка) -->
+                        <a href="https://www.twitch.tv/theratmir153" target="_blank" class="social-btn" title="Twitch" style="--brand-color: #9146FF; --brand-glow: rgba(145, 70, 255, 0.4);">
+                            <img src="Images/Twitch.webp" alt="Twitch Icon">
+                        </a>
+                        <!-- TeaTeam -->
+                        <a href="https://t.me/TeaTeaam" target="_blank" class="social-btn" title="TeaTeam" style="--brand-color: #a3e635; --brand-glow: rgba(163, 230, 53, 0.4);">
+                            <img src="Images/TeaTeam.webp" alt="TeaTeam Icon">
+                        </a>
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@theratmir153?_r=1&_t=ZS-928aFUmmdSm" target="_blank" class="social-btn" title="TikTok" style="--brand-color: #69C9D0; --brand-glow: rgba(105, 201, 208, 0.4);">
+                            <img src="Images/TikTok.webp" alt="TikTok Icon">
+                        </a>
+                        <!-- X (Twitter) -->
+                        <a href="https://x.com/TheRatmir153" target="_blank" class="social-btn" title="X (Twitter)" style="--brand-color: #ffffff; --brand-glow: rgba(255, 255, 255, 0.2);">
+                            <img src="Images/X.webp" alt="X Icon">
+                        </a>
+                        <!-- Modrinth -->
+                        <a href="https://modrinth.com/user/TheRatmir" target="_blank" class="social-btn" title="Modrinth" style="--brand-color: #16c879; --brand-glow: rgba(22, 200, 121, 0.4);">
+                            <img src="Images/Modrinth.webp" alt="Modrinth Icon">
+                        </a>
+                        <!-- Namemc -->
+                        <a href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" class="social-btn" title="Namemc" style="--brand-color: #3b82f6; --brand-glow: rgba(59, 130, 246, 0.4);">
+                            <img src="Images/NameMC.webp" alt="Namemc Icon">
+                        </a>
                     </div>
                 </div>
 
-                <!-- Кнопка "Связаться со мной" -->
-                <a class="contact-btn" href="https://t.me/TheRatmirBot" target="_blank" rel="noopener noreferrer" style="margin-left:0;">
-                    Связаться со мной
-                </a>
+                <!-- Контактная группа -->
+                <div class="contact-group">
+                    <a href="https://t.me/TheRatmirBot" target="_blank" class="btn-contact">
+                        <i data-lucide="mail"></i>
+                        <span data-i18n="btn_contact">Связаться со мной</span>
+                    </a>
+                    <span class="warning-text" data-i18n="contact_warning">
+                        Писать только по важным вопросам, тупые сообщения будут игнорироваться
+                    </span>
+                </div>
 
-                <!-- Текст под кнопкой -->
-                <p style="margin-top:8px; font-size:14px; color:var(--muted); margin-left:0;">
-                    Писать только по важным вопросам! Тупые сообщения будут игнорироваться.
-                </p>
+            </div> <!-- Конец about-right-wrapper -->
+        </section>
+
+        <!-- Разделитель -->
+        <div class="divider"></div>
+
+        <!-- Секция Проекты -->
+        <section id="projects">
+            <!-- Добавил класс centered-heading для выравнивания по центру и скрытия декора -->
+            <h2 data-i18n="projects_title" class="centered-heading">Мои Проекты</h2>
+            <div class="projects-grid" id="projectsContainer">
+                <!-- Карточки генерируются JS -->
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Разделительная полоска, перемещенная над секцией "Мои проекты" -->
-    <div class="h-px w-1/2 mx-auto my-2"
-         style="background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);">
-    </div>
+        <!-- Разделитель -->
+        <div class="divider"></div>
 
-    <!-- Секция "Мои проекты" -->
-    <section id="projects" class="reveal">
-        <div style="text-align:center; margin-bottom:12px">
-            <div class="section-title">Мои проекты</div>
-        </div>
+        <!-- Секция Поддержать -->
+        <section id="support" class="support-section">
+            <a href="#" class="btn-support">
+                <i data-lucide="heart"></i>
+                <span data-i18n="btn_support">Поддержать меня (Пока не работает)</span>
+            </a>
+        </section>
 
-        <div class="projects-grid" id="projectsGrid">
-            <!-- Проект: TheRig -->
-            <article class="project reveal">
-                <a href="https://theratmir.github.io/TheRig/" target="_blank" rel="noopener noreferrer">
-                    <img class="proj-img" src="https://theratmir.github.io/TheRig/Images/TheRig%20Preview.webp" alt="TheRig">
-                </a>
-                <div class="proj-body">
-                    <div class="proj-title">TheRig</div>
-                    <p class="proj-desc">Простой, но хороший Minecraft риг для Blender 4.2+</p>
-                    <a class="proj-cta" href="https://theratmir.github.io/TheRig/index.html" target="_blank" rel="noopener noreferrer">Подробнее</a>
-                </div>
-            </article>
-
-            <!-- Проект: TheSimple -->
-            <article class="project reveal">
-                <a href="https://theratmir.github.io/TheSimple/" target="_blank" rel="noopener noreferrer">
-                    <img class="proj-img" src="https://theratmir.github.io/TheSimple/TheSimple_Preview.webp" alt="TheSimple">
-                </a>
-                <div class="proj-body">
-                    <div class="proj-title">TheSimple</div>
-                    <p class="proj-desc">Риг в стиле трейлеров Майнкрафта для Blender 4.2+</p>
-                    <a class="proj-cta" href="https://theratmir.github.io/TheSimple/" target="_blank" rel="noopener noreferrer">Подробнее</a>
-                </div>
-            </article>
-
-            <!-- Проект: EmoteBend -->
-            <article class="project reveal">
-                <a href="https://modrinth.com/resourcepack/emotebend" target="_blank" rel="noopener noreferrer">
-                    <img class="proj-img" src="https://cdn.modrinth.com/data/R7AmfT2N/images/81d664f1817af789eb522faa195173b83ae97069.png" alt="EmoteBend">
-                </a>
-                <div class="proj-body">
-                    <div class="proj-title">EmoteBend</div>
-                    <p class="proj-desc">Делает изгибы из Emotecraft рабочими.</p>
-                    <a class="proj-cta" href="https://modrinth.com/resourcepack/emotebend" target="_blank" rel="noopener noreferrer">Подробнее</a>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- Секция "Поддержать меня" -->
-    <section id="support" class="support-wrap reveal">
-        <div class="big-support" aria-disabled="true">
-            <span class="pulse">Поддержать меня (Пока не работает)</span>
-        </div>
-    </section>
+        <!-- Якорь для конца страницы -->
+        <div id="bottom"></div>
 
     </main>
 
     <script>
-        // Код для анимации появления элементов при скролле
-        (function () {
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('show');
-                        e.target.classList.add('visible');
-                        io.unobserve(e.target);
-                    }
-                })
-            }, { threshold: 0.12 });
+        /* --- ДАННЫЕ (Легко редактировать) --- */
 
-            document.querySelectorAll('[data-reveal], .reveal').forEach(el => io.observe(el));
-        })();
+        // Данные переводов
+        const translations = {
+            ru: {
+                header_role: "3D Артист и Контент мейкер",
+                nav_about: "Обо мне",
+                nav_projects: "Проекты",
+                nav_support: "Поддержать",
+                about_greeting: "Привет я TheRatmir",
+                // Обновленное описание с цветами и Twitch
+                about_desc: `Я 3D художник и контент креатор работающий в <span style="color: #a3e635;">TeaTeam</span>. Специализируюсь на создании визуального контента по <span style="color: #4ade80;">Minecraft</span> в <span style="color: #fb923c;">Blender</span>. Я делаю риги, рендеры, анимации и другие приколы. Делюсь творчеством и жизнью в <span style="color: #38bdf8;">Telegram</span>, а анимациями на <span style="color: #f87171;">YouTube</span>. Иногда стримлю на <span style="color: #a855f7;">Twitch</span>`,
+                btn_contact: "Связаться со мной",
+                contact_warning: "Писать только по важным вопросам, тупые сообщения будут игнорироваться",
+                projects_title: "Мои Проекты",
+                card_more: "Подробнее",
+                btn_support: "Поддержать меня (Пока не работает)"
+            },
+            en: {
+                header_role: "3D Artist & Content Maker",
+                nav_about: "About Me",
+                nav_projects: "Projects",
+                nav_support: "Support",
+                about_greeting: "Hi, I'm TheRatmir",
+                // Updated description with colors and Twitch
+                about_desc: `I am a 3D artist and content creator working at <span style="color: #a3e635;">TeaTeam</span>. I specialize in creating visual content for <span style="color: #4ade80;">Minecraft</span> in <span style="color: #fb923c;">Blender</span>. I make rigs, renders, animations, and other fun stuff. I share my creativity and life on <span style="color: #38bdf8;">Telegram</span>, animations on <span style="color: #f87171;">YouTube</span>, and sometimes stream on <span style="color: #a855f7;">Twitch</span>`,
+                btn_contact: "Contact Me",
+                contact_warning: "Write only for important questions, stupid messages will be ignored",
+                projects_title: "My Projects",
+                card_more: "More Info",
+                btn_support: "Support Me (Coming Soon)"
+            }
+        };
 
-        // Код для плавного скролла к секциям по клику на ссылки в меню
-        (function () {
-            document.querySelectorAll('a[href^="#"]').forEach(a => {
-                a.addEventListener('click', (e) => {
-                    const href = a.getAttribute('href');
-                    if (href.length > 1) {
-                        e.preventDefault();
-                        document.querySelector(href).scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        history.replaceState(null, '', href);
-                    }
-                })
-            })
-        })();
+        // Данные проектов: удалены плейсхолдеры, оставлены ссылки на локальные файлы
+        const projectsData = [
+            {
+                img: "https://theratmir.github.io/TheRig/Images/TheRig%20Preview.webp",
+                title: "TheRig 2.0",
+                desc: {
+                    ru: "Простой, но хороший Minecraft риг для Blender 4.2+",
+                    en: "A simple but solid Minecraft rig for Blender 4.2+"
+                },
+                link: "https://theratmir.github.io/TheRig/index.html"
+            },
+            {
+                img: "https://theratmir.github.io/TheSimple/TheSimple_Preview.webp",
+                title: "TheSimple",
+                desc: {
+                    ru: "Риг в стиле трейлеров Майнкрафта для Blender 4.2+",
+                    en: "A trailer-style Minecraft rig for Blender 4.2+"
+                },
+                link: "https://theratmir.github.io/TheSimple/"
+            },
+            {
+                img: "https://cdn.modrinth.com/data/R7AmfT2N/images/4b8cbcc79909549637a00d13df0079378c7248bd_350.webp",
+                title: "EmoteBend",
+                desc: {
+                    ru: "Делает изгибы из Emotecraft рабочими",
+                    en: "Makes Emotecraft bends fully functional"
+                },
+                link: "https://modrinth.com/resourcepack/emotebend"
+            }
+        ]
 
-        // Код для обработки нажатия клавиши Enter на кнопках социальных сетей
-        document.querySelectorAll('.social-btn').forEach(btn => btn.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') btn.click();
-        }));
+        let currentLang = 'ru';
+
+        /* --- ЛОГИКА --- */
+
+        // Рендер карточек проектов
+        function renderProjects() {
+            const container = document.getElementById('projectsContainer');
+            container.innerHTML = '';
+
+            projectsData.forEach(proj => {
+                const card = document.createElement('div');
+                card.className = 'card surface';
+
+                // Создание карточки проекта.
+                card.innerHTML = `
+                                                <a href="${proj.link}" class="card-img-box">
+                                                    <img src="${proj.img}" alt="${proj.title || 'Project'}" loading="lazy">
+                                                </a>
+                                                <div class="card-body">
+                                                    <h3 class="card-title">${proj.title || 'Project'}</h3>
+                                                    <div class="card-desc">${proj.desc[currentLang]}</div>
+                                                    <a href="${proj.link}" class="card-btn js-shine-target">
+                                                        ${translations[currentLang].card_more}
+                                                    </a>
+                                                </div>
+                                            `;
+                container.appendChild(card);
+            });
+
+            // Переподключаем слушатели событий мыши для новых кнопок
+            attachShineListeners();
+            // Подгоняем шрифт
+            adjustCardFonts();
+        }
+
+        // Автоподбор размера текста
+        function adjustCardFonts() {
+            document.querySelectorAll('.card-desc').forEach(desc => {
+                // Сброс перед пересчетом
+                desc.style.fontSize = '0.95rem';
+
+                // Уменьшаем пока не влезет или не достигнет минимума (12px)
+                // parseFloat возвращает размер в пикселях
+                while (desc.scrollHeight > desc.clientHeight && parseFloat(window.getComputedStyle(desc).fontSize) > 11) {
+                    let currentSize = parseFloat(window.getComputedStyle(desc).fontSize);
+                    desc.style.fontSize = (currentSize - 0.5) + 'px';
+                }
+            });
+        }
+
+        // Переключение языка
+        function switchLanguage() {
+            currentLang = currentLang === 'ru' ? 'en' : 'ru';
+
+            // Обновляем кнопку языка
+            const langLabel = document.getElementById('langLabel');
+            langLabel.textContent = currentLang === 'ru' ? 'EN' : 'RU';
+            document.documentElement.lang = currentLang;
+
+            // Обновляем статичный текст
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    // ВАЖНО: Используем innerHTML для поддержки цветного текста
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            // Перерисовываем проекты (чтобы обновилось описание и размер шрифта)
+            renderProjects();
+        }
+
+        // Эффект свечения (Shine)
+        function handleMouseMove(e) {
+            const target = e.currentTarget;
+            const rect = target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            target.style.setProperty('--mouse-x', `${x}px`);
+            target.style.setProperty('--mouse-y', `${y}px`);
+        }
+
+        function attachShineListeners() {
+            const shineElements = document.querySelectorAll('.btn-contact, .card-btn, .btn-support, .social-btn');
+            shineElements.forEach(el => {
+                el.removeEventListener('mousemove', handleMouseMove); // Избегаем дублей
+                el.addEventListener('mousemove', handleMouseMove);
+            });
+        }
+
+        /* --- ИНИЦИАЛИЗАЦИЯ --- */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Устанавливаем текущий язык (по умолчанию ru)
+            document.documentElement.lang = currentLang;
+
+            renderProjects();
+
+            // Слушатель смены языка
+            document.getElementById('langToggle').addEventListener('click', switchLanguage);
+
+            // Слушатель ресайза окна для пересчета шрифтов
+            window.addEventListener('resize', adjustCardFonts);
+
+            // Инициализация иконок
+            lucide.createIcons();
+
+            attachShineListeners();
+        });
+
     </script>
 </body>
 </html>
