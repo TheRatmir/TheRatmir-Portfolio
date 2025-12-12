@@ -174,10 +174,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
+            /* Убрана плашка (фон и границы) */
+            background: transparent;
+            border: none;
+            border-radius: 0;
         }
+
+            /* Добавлен эффект свечения (glow) для молнии */
+            .logo-icon-box svg {
+                filter: drop-shadow(0 0 12px var(--accent-primary));
+            }
 
         .logo-text-group {
             display: flex;
@@ -716,7 +722,7 @@
                             <img src="Images/TeaTeam.webp" alt="TeaTeam Icon">
                         </a>
                         <!-- TikTok -->
-                        <a href="https://www.tiktok.com/@theratmir153?_r=1&_t=ZS-928aFUmmdSm" target="_blank" class="social-btn" title="TikTok" style="--brand-color: #69C9D0; --brand-glow: rgba(105, 201, 208, 0.4);">
+                        <a href="https://www.tiktok.com/@theratmir153?_r=1&_t=ZS-928aFUmmdSm" target="_blank" class="social-btn" title="TikTok" style="--brand-color: #ffffff; --brand-glow: rgba(255, 255, 255, 0.2);">
                             <img src="Images/TikTok.webp" alt="TikTok Icon">
                         </a>
                         <!-- X (Twitter) -->
@@ -728,7 +734,7 @@
                             <img src="Images/Modrinth.webp" alt="Modrinth Icon">
                         </a>
                         <!-- Namemc -->
-                        <a href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" class="social-btn" title="Namemc" style="--brand-color: #3b82f6; --brand-glow: rgba(59, 130, 246, 0.4);">
+                        <a href="https://ru.namemc.com/profile/TheRatmir.1" target="_blank" class="social-btn" title="Namemc" style="--brand-color: #ffffff; --brand-glow: rgba(255, 255, 255, 0.2);">
                             <img src="Images/NameMC.webp" alt="Namemc Icon">
                         </a>
                     </div>
@@ -857,17 +863,17 @@
 
                 // Создание карточки проекта.
                 card.innerHTML = `
-                                                <a href="${proj.link}" class="card-img-box">
-                                                    <img src="${proj.img}" alt="${proj.title || 'Project'}" loading="lazy">
-                                                </a>
-                                                <div class="card-body">
-                                                    <h3 class="card-title">${proj.title || 'Project'}</h3>
-                                                    <div class="card-desc">${proj.desc[currentLang]}</div>
-                                                    <a href="${proj.link}" class="card-btn js-shine-target">
-                                                        ${translations[currentLang].card_more}
+                                                    <a href="${proj.link}" class="card-img-box">
+                                                        <img src="${proj.img}" alt="${proj.title || 'Project'}" loading="lazy">
                                                     </a>
-                                                </div>
-                                            `;
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">${proj.title || 'Project'}</h3>
+                                                        <div class="card-desc">${proj.desc[currentLang]}</div>
+                                                        <a href="${proj.link}" class="card-btn js-shine-target">
+                                                            ${translations[currentLang].card_more}
+                                                        </a>
+                                                    </div>
+                                                `;
                 container.appendChild(card);
             });
 
